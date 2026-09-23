@@ -154,10 +154,16 @@
 
 ## 📫 Контакты
 
-- 🌐 Блог: [zola.malexple.ru](https://zola.malexple.ru)
-- ☕ Поддержать: [boosty.to/malexple](https://boosty.to/malexple)
-- 📧 Почта: [malexple@gmail.com](mailto:malexple@gmail.com)
+- 📝 **Хабр**: [FilipLinx](https://habr.com/ru/users/FilipLinx/articles/) — пишу о разработке
+- 🌐 **Блог**: [zola.malexple.ru](https://zola.malexple.ru)
+- ☕ **Поддержать**: [boosty.to/malexple](https://boosty.to/malexple)
+- 📧 **Почта**: [malexple@gmail.com](mailto:malexple@gmail.com)
 
+<sub>💡 Псевдоним **FilipLinx** — в честь Филипа Линкса (Флинкса), героя цикла
+«Мир Человечества» Алана Дина Фостера: сирота-воришка с планеты Мот, эмпат и
+авантюрист, ставший агентом Объединённой Церкви. Он всегда побеждал не силой,
+а чутьём и умением распутывать невозможные ситуации. Эмпатия к людям и
+импровизация — ровно то, как я проектирую и создаю.</sub>
 ---
 
 <p align="center">
