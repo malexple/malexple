@@ -98,17 +98,17 @@
 ## 📊 Цифры
 
 <p align="center">
-  <img src="./assets/profile-summary-card-generated/0-profile-details.svg" />
+  <img src="./profile-summary-card-output/tokyonight/0-profile-details.svg" />
 </p>
 
 <p align="center">
-  <img src="./assets/profile-summary-card-generated/1-repos-per-language.svg" />
-  <img src="./assets/profile-summary-card-generated/2-most-commit-language.svg" />
+  <img src="./profile-summary-card-output/tokyonight/1-repos-per-language.svg" />
+  <img src="./profile-summary-card-output/tokyonight/2-most-commit-language.svg" />
 </p>
 
 <p align="center">
-  <img src="./assets/profile-summary-card-generated/3-stats.svg" />
-  <img src="./assets/profile-summary-card-generated/4-productive-time.svg" />
+  <img src="./profile-summary-card-output/tokyonight/3-stats.svg" />
+  <img src="./profile-summary-card-output/tokyonight/4-productive-time.svg" />
 </p>
 
 ---
