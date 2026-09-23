@@ -1,11 +1,11 @@
 name: GitHub Profile Summary Cards
 
 on:
-  schedule:
-    - cron: '0 0 * * *'  # Каждый день в полночь
+  schedule: # Обновление каждые сутки в 00:00
+    - cron: '0 0 * * *'
   push:
-    branches: [ main, master ]
-  workflow_dispatch:  # Запуск вручную
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -14,16 +14,11 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Generate Summary Cards
-        uses: vn7n24fzkq/github-profile-summary-cards@release
+      - uses: actions/checkout@v4
+      - uses: vn7n24fzkq/github-profile-summary-cards@release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           USERNAME: malexple
+          OUTPUT_DIR: assets
           THEME: tokyonight
-          UTC_OFFSET: 3  # Москва
-          AUTO_PUSH: true
-          BRANCH_NAME: main
