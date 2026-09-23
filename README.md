@@ -18,13 +18,52 @@
 
 ---
 
+## 🚀 Работает в продакшене
+
+Сервисы с реальными пользователями и живыми метриками — можно потрогать прямо сейчас.
+
+<table>
+<tr>
+<td width="50%">
+
+### 📚 Book Metadata Service
+![status](https://img.shields.io/website?url=https%3A%2F%2Fbookmetadata.ru&label=online&style=flat-square)
+
+**[bookmetadata.ru](https://bookmetadata.ru)** — открытый каталог книжных метаданных.
+
+- 📖 **1 776+ книг** и **1 388+ авторов** в базе
+- 🔑 Бесплатный API без регистрации и ключей
+- 🔀 Open Library + Google Books + FantLab → одна карточка
+
+Попробовать: `curl "https://bookmetadata.ru/api/v1/search/isbn/9785389143852"`
+
+</td>
+<td width="50%">
+
+### 🧠 Scanner Profile
+![status](https://img.shields.io/website?url=https%3A%2F%2Fmalexple-scanner-profile.hf.space&label=online&style=flat-square)
+
+**[Пройти тест](https://malexple-scanner-profile.hf.space/)** — тип по Барбаре Шер + гении по Ленсиони.
+
+- 👥 **1 053 человека** начали, **255** прошли до конца
+- 📈 Конверсия 24.2% · [публичная статистика](https://malexple-scanner-profile.hf.space/stats?lang=ru)
+- 🌍 3 языка: RU / EN / 中文 · 🤗 Hugging Face Spaces
+
+</td>
+</tr>
+</table>
+
+<sub>Метрики сервисов — по состоянию на сентябрь 2026.</sub>
+
+---
+
 ## 📚 Хаос метаданных → Чистый API
 
 *Проблема: разрозненные библиотечные каталоги, неструктурированные PDF, ручная работа*
 
 | Проект | Как упрощает | Стек |
 |--------|--------------|------|
-| [**book-metadata-service**](https://github.com/malexple/book-metadata-service) | Один REST API вместо десяти сайтов. Open Library + Google Books + FantLab → одна карточка книги | Java, Spring Boot |
+| [**book-metadata-service**](https://github.com/malexple/book-metadata-service) · 🌐 [live](https://bookmetadata.ru) | Один REST API вместо десяти сайтов. Open Library + Google Books + FantLab → одна карточка книги | Java, Spring Boot |
 | [**fondoscan**](https://github.com/malexple/fondoscan) | Автоматическая экстракция из PDF/DjVu: OCR + сверка с Library of Congress. Человек только подтверждает | Java, Tesseract |
 | [**udk-book-scanner**](https://github.com/malexple/udk-book-scanner) | Парсит коды УДК из сканов — библиотекарь больше не вводит их вручную | Java |
 | [**udk-site-parser**](https://github.com/malexple/udk-site-parser) | Иерархия кодов УДК с сайта → готовая структура для импорта | Java |
@@ -59,7 +98,7 @@
 | [**sysmon**](https://github.com/malexple/sysmon) | Диагностика Windows **без админ-прав**: portable .jar → CSV с топ-процессами | Java |
 | [**mermaid-app**](https://github.com/malexple/mermaid-app) | Mermaid.js с визуальным редактором, темами и экспортом в SVG/PNG | Java, CodeMirror |
 | [**idea-platform**](https://github.com/malexple/idea-platform) | Идеи из чатов → структурированная воронка с SLA и gamification | Java, PostgreSQL |
-| [**scanner-profile**](https://github.com/malexple/scanner-profile) | Сложные психологические модели (Шер, Ленсиони) → простой тест на 15 минут | Java, HuggingFace |
+| [**scanner-profile**](https://github.com/malexple/scanner-profile) · 🌐 [live](https://malexple-scanner-profile.hf.space/) | Сложные психологические модели (Шер, Ленсиони) → простой тест на 15 минут | Java, HuggingFace |
 
 ---
 
@@ -117,6 +156,7 @@
 
 - 🌐 Блог: [zola.malexple.ru](https://zola.malexple.ru)
 - ☕ Поддержать: [boosty.to/malexple](https://boosty.to/malexple)
+- 📧 Почта: [malexple@gmail.com](mailto:malexple@gmail.com)
 
 ---
 
