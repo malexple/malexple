@@ -98,8 +98,17 @@
 ## 📊 Цифры
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=malexple&show_icons=true&theme=tokyonight&hide_border=true" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=malexple&layout=compact&theme=tokyonight&hide_border=true&exclude_repo=typora-portable,rust-portable" />
+  <img src="./assets/profile-summary-card-generated/0-profile-details.svg" />
+</p>
+
+<p align="center">
+  <img src="./assets/profile-summary-card-generated/1-repos-per-language.svg" />
+  <img src="./assets/profile-summary-card-generated/2-most-commit-language.svg" />
+</p>
+
+<p align="center">
+  <img src="./assets/profile-summary-card-generated/3-stats.svg" />
+  <img src="./assets/profile-summary-card-generated/4-productive-time.svg" />
 </p>
 
 ---
