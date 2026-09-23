@@ -1,90 +1,109 @@
-# 👋 Привет! Я malexple
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=28&duration=3000&pause=1000&color=61DAFB&center=true&vCenter=true&multiline=true&width=600&height=100&lines=MA+making+compLEX+simPLE;Делать+сложное+%E2%80%94+простым" alt="malexple" />
+</p>
 
-Разработчик, увлекающийся библиотечными системами, инструментами для продуктивности, низкоуровневым программированием и экспериментами с физикой.
+<p align="center">
+  <code><strong>MA</strong>king comp<strong>LEX</strong> sim<strong>PLE</strong></code>
+</p>
 
----
-
-## 📚 Библиотеки и метаданные книг
-
-Проекты для работы с книгами, УДК и библиотечными каталогами.
-
-| Проект | Назначение | Стек |
-|--------|-----------|------|
-| [**book-metadata-service**](https://github.com/malexple/book-metadata-service) | Открытый API для поиска метаданных книг по ISBN/названию. Объединяет Open Library, Google Books, FantLab в одну карточку | Java, Spring Boot, PostgreSQL |
-| [**fondoscan**](https://github.com/malexple/fondoscan) | CLI для извлечения метаданных из PDF/DjVu (OCR + сверка с Library of Congress) | Java, Tesseract |
-| [**udk-book-scanner**](https://github.com/malexple/udk-book-scanner) | Поиск кодов УДК в PDF/DjVu документах | Java |
-| [**udk-site-parser**](https://github.com/malexple/udk-site-parser) | Парсер иерархических кодов УДК с веб-сайтов | Java |
-| [**sopds**](https://github.com/malexple/sopds) | OPDS-сервер для организации домашней библиотеки | Java, HTML |
-| [**bdoc-editor**](https://github.com/malexple/bdoc-editor) | Desktop-редактор для верстки и реставрации книг (альтернатива InDesign) | JavaFX |
-| [**obsidian-book-search-plugin**](https://github.com/malexple/obsidian-book-search-plugin) | Obsidian-плагин для автосоздания заметок по поиску книг | TypeScript |
-| [**scanner-profile**](https://github.com/malexple/scanner-profile) | Тест для определения типа сканера (Барбара Шер) и рабочих гениев (Ленсиони) | Java, Spring Boot |
+<p align="center">
+  <em>Каждый проект здесь — это мостик между сложностью реального мира и удобством использования.</em>
+</p>
 
 ---
 
-## 🛡 Безопасность и управление паролями
+## 🧭 Манифест
 
-Инструменты для работы с KeePass и VPN.
-
-| Проект | Назначение | Стек |
-|--------|-----------|------|
-| [**keepasshttp2**](https://github.com/malexple/keepasshttp2) | KeePass 2.x плагин: протокол KeePassXC-Browser (WebSocket + NaCl crypto) | C# |
-| [**keepasshttp2-browser**](https://github.com/malexple/keepasshttp2-browser) | Chromium-расширение для автозаполнения паролей из KeePass | TypeScript |
-| [**openvpn-agent**](https://github.com/malexple/openvpn-agent) | REST API агент для управления OpenVPN через Telegram-бота | Java |
+Я верю, что хорошая инженерия — это **упрощение**, а не усложнение. Поэтому мои проекты решают одну задачу: взять что-то запутанное (протокол, формат, систему, концепцию) и сделать это доступным через понятный интерфейс.
 
 ---
 
-## 🛠 Инструменты для разработки
+## 📚 Хаос метаданных → Чистый API
 
-Mock-серверы, прокси, утилиты для тестирования API.
+*Проблема: разрозненные библиотечные каталоги, неструктурированные PDF, ручная работа*
 
-| Проект | Назначение | Стек |
-|--------|-----------|------|
-| [**web-wiremock**](https://github.com/malexple/web-wiremock) | Веб-интерфейс для WireMock: дерево стабов, мастер создания, профили, сценарии | Java, Spring Boot, Bootstrap |
-| [**wiremock-js-extension**](https://github.com/malexple/wiremock-js-extension) | JavaScript-движок для WireMock: динамические ответы через скрипты | Java, ANTLR |
-| [**ai-proxy**](https://github.com/malexple/ai-proxy) | Universal AI Gateway: единый доступ к Gemini/OpenAI/Anthropic с обходом geo-ограничений | Java, Docker |
-| [**vercel-proxy**](https://github.com/malexple/vercel-proxy) | Прокси для Vercel | JavaScript |
-| [**openapi-designer**](https://github.com/malexple/openapi-designer) | Инструмент для проектирования OpenAPI-спецификаций | Java, HTML |
-| [**sysmon**](https://github.com/malexple/sysmon) | Портативная диагностика Windows: CPU/RAM/Disk по процессам без админ-прав | Java |
-| [**gitbucket-docker-postgres**](https://github.com/malexple/gitbucket-docker-postgres) | Docker-конфигурация для GitBucket + PostgreSQL | Dockerfile |
-
----
-
-## 🌐 Веб-приложения и визуализация
-
-Интерактивные инструменты для работы с данными и диаграммами.
-
-| Проект | Назначение | Стек |
-|--------|-----------|------|
-| [**mermaid-app**](https://github.com/malexple/mermaid-app) | Веб-редактор диаграмм Mermaid с экспортом в SVG/PNG и настройкой тем | Java, Spring Boot, CodeMirror |
-| [**idea-platform**](https://github.com/malexple/idea-platform) | Внутрикорпоративная платформа управления идеями сотрудников с gamification | Java, PostgreSQL |
-| [**malexple-blog**](https://github.com/malexple/malexple-blog) | Личный блог на статическом генераторе Zola | Zola, HTML |
+| Проект | Как упрощает | Стек |
+|--------|--------------|------|
+| [**book-metadata-service**](https://github.com/malexple/book-metadata-service) | Один REST API вместо десяти сайтов. Open Library + Google Books + FantLab → одна карточка книги | Java, Spring Boot |
+| [**fondoscan**](https://github.com/malexple/fondoscan) | Автоматическая экстракция из PDF/DjVu: OCR + сверка с Library of Congress. Человек только подтверждает | Java, Tesseract |
+| [**udk-book-scanner**](https://github.com/malexple/udk-book-scanner) | Парсит коды УДК из сканов — библиотекарь больше не вводит их вручную | Java |
+| [**udk-site-parser**](https://github.com/malexple/udk-site-parser) | Иерархия кодов УДК с сайта → готовая структура для импорта | Java |
+| [**bdoc-editor**](https://github.com/malexple/bdoc-editor) | Верстка книг без InDesign: desktop-редактор для реставраторов и малых издательств | JavaFX |
+| [**sopds**](https://github.com/malexple/sopds) | Домашняя коллекция PDF → OPDS-каталог для читалки | Java |
+| [**obsidian-book-search-plugin**](https://github.com/malexple/obsidian-book-search-plugin) | ISBN → готовая заметка в Obsidian с обложкой и описанием | TypeScript |
 
 ---
 
-## 🧪 Эксперименты и пет-проекты
+## 🛡 Криптография → Одно нажатие
 
-Изучение новых языков, низкоуровневое программирование, научные симуляции.
+*Проблема: протоколы с key exchange, WebSocket, nonce — сложно для конечного пользователя*
 
-| Проект | Назначение | Стек |
-|--------|-----------|------|
-| [**quant**](https://github.com/malexple/quant) | Симуляция квантового поля на решётке 100×100: волны, солитоны, аннигиляция частиц | Java, Swing |
-| [**moon**](https://github.com/malexple/moon) | Анализ "космической музыки" Apollo-10: разбор на 4 физических слоя | Python |
-| [**ellochka-zig**](https://github.com/malexple/ellochka-zig) | Полный интерпретатор языка Ellochka (62 оператора) с графическим режимом | Zig |
-| [**alifba**](https://github.com/malexple/alifba) | Минималистичный язык Älifba для DOS (~4KB .COM файл) | Assembly |
-| [**dex-linux**](https://github.com/malexple/dex-linux) | Local Desktop: запуск Linux-окружения на Android (Proot + Wayland) | Rust |
-| [**rust-portable**](https://github.com/malexple/rust-portable) | Портативная версия Rust для Windows (быстрый старт без установки) | Shell, Batch |
-| [**typora-portable**](https://github.com/malexple/typora-portable) | Портативная версия Markdown-редактора Typora | — |
+| Проект | Как упрощает | Стек |
+|--------|--------------|------|
+| [**keepasshttp2**](https://github.com/malexple/keepasshttp2) | KeePassXC-Browser протокол на C# без зависимостей: crypto_box + WebSocket внутри одного DLL | C#, NaCl |
+| [**keepasshttp2-browser**](https://github.com/malexple/keepasshttp2-browser) | Пользователь просто кликает на иконку — пароль вставляется. Вся криптография под капотом | TypeScript |
+| [**openvpn-agent**](https://github.com/malexple/openvpn-agent) | `/new-client vpn` в Telegram → готовый .ovpn файл. Никаких SSH и конфигов | Java |
 
 ---
 
-## 📊 Моя статистика
+## 🛠 Сырые инструменты → Визуальные интерфейсы
 
-![malexple's GitHub stats](https://github-readme-stats.vercel.app/api?username=malexple&show_icons=true&theme=tokyonight)
+*Проблема: JSON-файлы, CLI-утилиты, консоль — страшно для QA и команды*
 
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=malexple&layout=compact&theme=tokyonight&exclude_repo=typora-portable,rust-portable)
+| Проект | Как упрощает | Стек |
+|--------|--------------|------|
+| [**web-wiremock**](https://github.com/malexple/web-wiremock) | WireMock через drag-and-drop UI: мастер стабов, сценарии, профили, журнал запросов | Java, Spring Boot |
+| [**wiremock-js-extension**](https://github.com/malexple/wiremock-js-extension) | Вместо Java-трансформеров — простые JS-скрипты с понятным whitelist API | Java, ANTLR |
+| [**ai-proxy**](https://github.com/malexple/ai-proxy) | Один URL для всех LLM-провайдеров. Geo-блоки и ключи — через ENV, без кода | Java, Docker |
+| [**openapi-designer**](https://github.com/malexple/openapi-designer) | Дизайнер OpenAPI спецификаций в удобном UI | Java, HTML |
+| [**sysmon**](https://github.com/malexple/sysmon) | Диагностика Windows **без админ-прав**: portable .jar → CSV с топ-процессами | Java |
+| [**mermaid-app**](https://github.com/malexple/mermaid-app) | Mermaid.js с визуальным редактором, темами и экспортом в SVG/PNG | Java, CodeMirror |
+| [**idea-platform**](https://github.com/malexple/idea-platform) | Идеи из чатов → структурированная воронка с SLA и gamification | Java, PostgreSQL |
+| [**scanner-profile**](https://github.com/malexple/scanner-profile) | Сложные психологические модели (Шер, Ленсиони) → простой тест на 15 минут | Java, HuggingFace |
 
 ---
 
-## 📫 Контакты
+## 🔬 Загадки → Понятные ответы
 
-- 📧 Email: malexple@gmail.com
+*Проблема: мистика, интерференция, "необъяснимое"*
+
+| Проект | Как упрощает | Стек |
+|--------|--------------|------|
+| [**quant**](https://github.com/malexple/quant) | Квантовое поле через одно уравнение: видишь рождение и аннигиляцию частиц мышкой | Java, Swing |
+| [**moon**](https://github.com/malexple/moon) | "Космическая музыка" Apollo-10: разобрал на 4 физических слоя скриптами на Python | Python |
+
+---
+
+## 🧪 Новые языки → Минимальный синтаксис
+
+*Проблема: сложные спецификации, тяжелые компиляторы*
+
+| Проект | Как упрощает | Стек |
+|--------|--------------|------|
+| [**ellochka-zig**](https://github.com/malexple/ellochka-zig) | Язык Ellochka (1999): 62 оператора реализованы на Zig, с графикой и играми | Zig |
+| [**alifba**](https://github.com/malexple/alifba) | Язык Älifba для DOS: ~4 КБ, сингармонизм суффиксов, всё в одном .COM файле | Assembly |
+| [**dex-linux**](https://github.com/malexple/dex-linux) | Linux на Android одним кликом: Proot + Wayland, без рута и конфигов | Rust |
+| [**rust-portable**](https://github.com/malexple/rust-portable) | Rust без `rustup`: запустил скрипт — и пишешь код | Shell, Batch |
+
+---
+
+## 🌐 Личное
+
+| Проект | О чём |
+|--------|-------|
+| [**malexple-blog**](https://github.com/malexple/malexple-blog) | Блог на Zola → [zola.malexple.ru](https://zola.malexple.ru) |
+
+---
+
+## 📊 Цифры
+
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=malexple&show_icons=true&theme=tokyonight&hide_border=true" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=malexple&layout=compact&theme=tokyonight&hide_border=true&exclude_repo=typora-portable,rust-portable" />
+</p>
+
+---
+
+<p align="center">
+  <sub>💬 Есть сложная вещь, которую нужно сделать простой? <a href="mailto:malexple@gmail.com">Напишите мне</a></sub>
+</p>
