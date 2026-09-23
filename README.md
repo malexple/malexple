@@ -113,6 +113,13 @@
 
 ---
 
+## 📫 Контакты
+
+- 🌐 Блог: [zola.malexple.ru](https://zola.malexple.ru)
+- ☕ Поддержать: [boosty.to/malexple](https://boosty.to/malexple)
+
+---
+
 <p align="center">
   <sub>💬 Есть сложная вещь, которую нужно сделать простой? <a href="mailto:malexple@gmail.com">Напишите мне</a></sub>
 </p>
