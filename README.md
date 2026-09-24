@@ -77,11 +77,12 @@
 
 *Проблема: протоколы с key exchange, WebSocket, nonce — сложно для конечного пользователя*
 
-| Проект | Как упрощает | Стек |
-|--------|--------------|------|
-| [**keepasshttp2**](https://github.com/malexple/keepasshttp2) | KeePassXC-Browser протокол на C# без зависимостей: crypto_box + WebSocket внутри одного DLL | C#, NaCl |
-| [**keepasshttp2-browser**](https://github.com/malexple/keepasshttp2-browser) | Пользователь просто кликает на иконку — пароль вставляется. Вся криптография под капотом | TypeScript |
-| [**openvpn-agent**](https://github.com/malexple/openvpn-agent) | `/new-client vpn` в Telegram → готовый .ovpn файл. Никаких SSH и конфигов | Java |
+| Проект | Как упрощает                                                                                                                                      | Стек |
+|--------|---------------------------------------------------------------------------------------------------------------------------------------------------|------|
+| [**keepasshttp2**](https://github.com/malexple/keepasshttp2) | KeePassXC-Browser протокол на C# без зависимостей: crypto_box + WebSocket внутри одного DLL                                                       | C#, NaCl |
+| [**keepasshttp2-browser**](https://github.com/malexple/keepasshttp2-browser) | Пользователь просто кликает на иконку — пароль вставляется. Вся криптография под капотом                                                          | TypeScript |
+| [**keepass-copy-key**](https://github.com/malexple/keepass-copy-key) | Плагин для удобного импорта и экспорта паролей в KeePass. Вся криптография под капотом | C#, NaCl |
+| [**openvpn-agent**](https://github.com/malexple/openvpn-agent) | `/new-client vpn` в Telegram → готовый .ovpn файл. Никаких SSH и конфигов                                                                         | Java |
 
 ---
 
