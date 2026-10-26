@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -27,12 +28,14 @@ public class ProfileUpdater {
     private static final String GEMINI_KEY = System.getenv("GEMINI_API_KEY");
     private static final String GEMINI_MODEL = envOr("GEMINI_MODEL", "gemini-3.5-flash-lite");
     private static final String GEMINI_FALLBACK = "gemini-3.8-flash";
-    private static final String PROMPT_VERSION = "v3";
+    private static final String PROMPT_VERSION = "v4";
     private static final int MAX_REFRESHES = 15;
     private static final int README_LIMIT = 12_000;
     private static final int ROADMAP_LIMIT = 6_000;
     private static final String GH_JSON = "application/vnd.github.v3+json";
     private static final Path CACHE_PATH = Paths.get("ai-descriptions.json");
+    private static final DateTimeFormatter RU_DATE =
+            DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.forLanguageTag("ru"));
 
     private static final double BASE_COMMITS = 0.5;
     private static final double BASE_LINES = 150.0;
@@ -44,10 +47,6 @@ public class ProfileUpdater {
 
     private static final Pattern CATEGORY_PATTERN = Pattern.compile(
             "<!--\\s*PROJECTS_TABLE_START:\\s*(.+?)\\s*-->(.*?)<!--\\s*PROJECTS_TABLE_END\\s*-->",
-            Pattern.DOTALL
-    );
-    private static final Pattern VELOCITY_PATTERN = Pattern.compile(
-            "<!--\\s*VELOCITY_TABLE_START\\s*-->(.*?)<!--\\s*VELOCITY_TABLE_END\\s*-->",
             Pattern.DOTALL
     );
     private static final Pattern LAST_PAGE = Pattern.compile("page=(\\d+)>;\\s*rel=\"last\"");
@@ -72,12 +71,11 @@ public class ProfileUpdater {
         String cacheBefore = cache.toString();
         int[] budget = {MAX_REFRESHES};
         if (GEMINI_KEY == null || GEMINI_KEY.isBlank()) {
-            System.out.println("ℹ GEMINI_API_KEY не задан — описания и скорость не обновляются");
+            System.out.println("ℹ GEMINI_API_KEY не задан — карточки не обновляются");
         }
 
         JSONArray repos = new JSONArray(response.body());
         Map<String, List<ProjectInfo>> categorized = new LinkedHashMap<>();
-        List<ProjectInfo> all = new ArrayList<>();
         List<String> processed = new ArrayList<>();
         List<String> skipped = new ArrayList<>();
 
@@ -99,9 +97,8 @@ public class ProfileUpdater {
                 String desc = meta.description() != null ? meta.description() : "";
                 Enriched e = resolve(client, repoName, meta, pushedAt, cache, budget);
 
-                var info = new ProjectInfo(title, desc, e.details(), url, e.facts(), e.plan());
-                categorized.computeIfAbsent(meta.category(), k -> new ArrayList<>()).add(info);
-                all.add(info);
+                categorized.computeIfAbsent(meta.category(), k -> new ArrayList<>())
+                        .add(new ProjectInfo(title, desc, e.card(), url, e.facts(), e.plan()));
                 processed.add(repoName);
                 System.out.println("✓ " + repoName + " → " + meta.category());
             } else {
@@ -131,9 +128,9 @@ public class ProfileUpdater {
             markers.add(section);
             List<ProjectInfo> projects = categorized.getOrDefault(section, Collections.emptyList());
 
-            String replacement = "<!-- PROJECTS_TABLE_START: " + section + " -->\n"
-                    + generateTable(projects)
-                    + "\n<!-- PROJECTS_TABLE_END -->";
+            String replacement = "<!-- PROJECTS_TABLE_START: " + section + " -->\n\n"
+                    + generateCards(projects)
+                    + "\n\n<!-- PROJECTS_TABLE_END -->";
 
             replacements.put(matcher.group(0), replacement);
             System.out.println("✓ Раздел '" + section + "': " + projects.size() + " проектов");
@@ -153,17 +150,7 @@ public class ProfileUpdater {
             }
         }
 
-        String result = updated.toString();
-        Matcher vm = VELOCITY_PATTERN.matcher(result);
-        if (vm.find()) {
-            String block = "<!-- VELOCITY_TABLE_START -->\n" + generateVelocityTable(all)
-                    + "\n<!-- VELOCITY_TABLE_END -->";
-            result = result.substring(0, vm.start()) + block + result.substring(vm.end());
-        } else {
-            System.out.println("ℹ В README нет маркеров VELOCITY_TABLE_START / VELOCITY_TABLE_END");
-        }
-
-        Files.writeString(readmePath, result, StandardCharsets.UTF_8);
+        Files.writeString(readmePath, updated.toString(), StandardCharsets.UTF_8);
         System.out.println("\n✅ README обновлён!");
 
         if (!skipped.isEmpty()) {
@@ -205,8 +192,7 @@ public class ProfileUpdater {
             if (map == null) {
                 return null;
             }
-            return new MetaInfo(str(map, "title"), str(map, "description"),
-                    str(map, "category"), str(map, "details"));
+            return new MetaInfo(str(map, "title"), str(map, "description"), str(map, "category"));
         } catch (Exception e) {
             System.err.println("⚠ Ошибка чтения " + repoName + "/metadataInfo.yaml: " + e.getMessage());
             return null;
@@ -223,7 +209,6 @@ public class ProfileUpdater {
         return body.length() > limit ? body.substring(0, limit) : body;
     }
 
-    // Факты из GitHub API: число коммитов, даты первого/последнего, добавленные строки
     private static Facts fetchFacts(HttpClient client, String repo) throws Exception {
         String base = "https://api.github.com/repos/" + USERNAME + "/" + repo;
         HttpResponse<String> r1 = client.send(githubRequest(base + "/commits?per_page=1", GH_JSON),
@@ -289,21 +274,20 @@ public class ProfileUpdater {
     private static Enriched resolve(HttpClient client, String repo, MetaInfo meta, String pushedAt,
                                     JSONObject cache, int[] budget) {
         JSONObject cached = cache.optJSONObject(repo);
-        Enriched old = cached == null ? new Enriched("", null, null) : fromCache(cached);
-        String manual = meta.details() != null && !meta.details().isEmpty() ? meta.details() : null;
+        Enriched old = cached == null ? new Enriched(null, null, null) : fromCache(cached);
 
         if (GEMINI_KEY == null || GEMINI_KEY.isBlank()) {
-            return withManual(old, manual);
+            return old;
         }
 
         String stamp = PROMPT_VERSION + "|" + GEMINI_MODEL + "|" + pushedAt;
         if (cached != null && stamp.equals(cached.optString("stamp"))) {
-            return withManual(old, manual);
+            return old;
         }
         if (cached != null) {
             if (budget[0] <= 0) {
                 System.out.println("ℹ " + repo + ": лимит обновлений за запуск исчерпан");
-                return withManual(old, manual);
+                return old;
             }
             budget[0]--;
         }
@@ -313,41 +297,57 @@ public class ProfileUpdater {
             String readme = fetchRaw(client, "https://api.github.com/repos/" + USERNAME + "/" + repo
                     + "/readme", README_LIMIT);
             if (facts == null || readme == null || readme.isBlank()) {
-                return withManual(old, manual);
+                return old;
             }
             String roadmap = fetchRaw(client, "https://api.github.com/repos/" + USERNAME + "/" + repo
                     + "/contents/ROADMAP.md", ROADMAP_LIMIT);
 
             Analysis a = askGemini(client, repo, meta, readme, roadmap);
             if (a == null) {
-                return withManual(old, manual);
+                return old;
             }
-            Enriched fresh = new Enriched(a.details(), facts, a.plan());
+            Enriched fresh = new Enriched(a.card(), facts, a.plan());
             cache.put(repo, toCache(stamp, fresh));
             System.out.println("🤖 " + repo + ": проанализирован");
-            return withManual(fresh, manual);
+            return fresh;
         } catch (Exception e) {
             System.err.println("⚠ Анализ " + repo + ": " + e.getMessage());
-            return withManual(old, manual);
+            return old;
         }
-    }
-
-    private static Enriched withManual(Enriched e, String manual) {
-        return manual == null ? e : new Enriched(manual, e.facts(), e.plan());
     }
 
     private static Analysis askGemini(HttpClient client, String repoName, MetaInfo meta,
                                       String readme, String roadmap) throws Exception {
-        String prompt = "Проанализируй проект для витрины GitHub-профиля и верни ТОЛЬКО JSON такого вида:\n"
-                + "{\"details\": string, \"plan\": null | {\"total_stages\": int, \"completed_stages\": int, "
+        String prompt = "Ты технический аналитик. Подготовь карточку проекта для витрины GitHub-профиля "
+                + "и верни ТОЛЬКО JSON такого вида:\n"
+                + "{\"emoji\": string, \"what_it_does\": string, \"pain\": string, "
+                + "\"ratings\": {"
+                + "\"science\": {\"score\": int, \"comment\": string}, "
+                + "\"tech\": {\"score\": int, \"comment\": string}, "
+                + "\"originality\": {\"score\": int, \"comment\": string}, "
+                + "\"ambition\": {\"score\": int, \"comment\": string}}, "
+                + "\"foundations\": string, \"feature\": string, "
+                + "\"plan\": null | {\"total_stages\": int, \"completed_stages\": int, "
                 + "\"current_stage\": string, \"planned_duration_days\": int | null}}\n\n"
-                + "details: русский язык, 2 предложения, не более 250 символов, простой текст без markdown, "
-                + "без символа |, без эмодзи. Не повторяй краткое описание: добавь, как проект устроен, "
-                + "на чём построен и кому полезен.\n"
+                + "Правила текста: русский язык, простой текст без markdown, без символа |.\n"
+                + "emoji: ровно один эмодзи по теме проекта.\n"
+                + "what_it_does: 2-3 предложения, до 350 символов: что проект делает и как устроен.\n"
+                + "pain: 1-2 предложения, до 250 символов: какую проблему решает и чем отличается от обычных решений.\n"
+                + "foundations: ключевые научные или технические основы: названия моделей, алгоритмов, "
+                + "стандартов, технологий, упомянутых в тексте. Перечисли через запятую.\n"
+                + "feature: одно предложение: принципиальная особенность или отказ от привычного подхода.\n"
+                + "comment: до 70 символов, поясняет оценку.\n\n"
+                + "Оценки 1-10, будь строгим, большинство проектов получает 4-7:\n"
+                + "science: научная сложность предметной области (1-3 обычная прикладная, 4-6 требует специальных знаний, "
+                + "7-8 опирается на научные модели, 9-10 открытая научная проблема).\n"
+                + "tech: техническая сложность реализации (архитектура, объём, число модулей, нетривиальные алгоритмы).\n"
+                + "originality: новизна подхода по тексту. Не утверждай, что аналогов нет, если автор этого не написал.\n"
+                + "ambition: масштаб замысла.\n"
+                + "Оценивай по тому, что реально описано и реализовано, а не по обещаниям.\n\n"
                 + "plan: заполняй только если в README или ROADMAP есть явный список этапов, фаз или чекбоксов. "
-                + "completed_stages — этапы, отмеченные выполненными. current_stage — короткое название "
-                + "текущего этапа. planned_duration_days — только если срок указан явно (недели переведи в дни), "
-                + "иначе null. Если плана нет — plan: null.\n"
+                + "completed_stages: этапы, отмеченные выполненными. current_stage: короткое название текущего этапа. "
+                + "planned_duration_days: только если срок указан явно (недели переведи в дни), иначе null. "
+                + "Если плана нет, plan: null.\n"
                 + "Опирайся только на факты из текста, ничего не выдумывай.\n\n"
                 + "Проект: " + repoName + "\n"
                 + "Краткое описание: " + (meta.description() == null ? "" : meta.description()) + "\n\n"
@@ -399,7 +399,6 @@ public class ProfileUpdater {
     private static Analysis parseAnalysis(String text) {
         String clean = text.replaceAll("^```(?:json)?\\s*|\\s*```$", "");
         JSONObject j = new JSONObject(clean);
-        String details = j.optString("details", "").trim();
 
         Plan plan = null;
         JSONObject p = j.optJSONObject("plan");
@@ -412,13 +411,17 @@ public class ProfileUpdater {
                         days > 0 ? days : null);
             }
         }
-        return new Analysis(details, plan);
+        j.remove("plan");
+        return new Analysis(j, plan);
     }
 
     // ---------- Кэш ----------
 
     private static JSONObject toCache(String stamp, Enriched e) {
-        JSONObject o = new JSONObject().put("stamp", stamp).put("details", e.details());
+        JSONObject o = new JSONObject().put("stamp", stamp);
+        if (e.card() != null) {
+            o.put("card", e.card());
+        }
         Facts f = e.facts();
         if (f != null) {
             o.put("facts", new JSONObject().put("commits", f.commits()).put("first", f.first())
@@ -445,7 +448,7 @@ public class ProfileUpdater {
         Plan p = po == null ? null
                 : new Plan(po.getInt("total"), po.getInt("completed"), po.optString("current", ""),
                 po.has("plannedDays") ? Integer.valueOf(po.getInt("plannedDays")) : null);
-        return new Enriched(c.optString("details", ""), f, p);
+        return new Enriched(c.optJSONObject("card"), f, p);
     }
 
     private static JSONObject loadCache() {
@@ -467,7 +470,7 @@ public class ProfileUpdater {
         Files.writeString(CACHE_PATH, json + "\n", StandardCharsets.UTF_8);
     }
 
-    // ---------- Утилиты и таблицы ----------
+    // ---------- Карточки ----------
 
     private static String envOr(String name, String def) {
         String v = System.getenv(name);
@@ -483,65 +486,116 @@ public class ProfileUpdater {
         return s.replace("|", "\\|").replaceAll("\\s*\\R\\s*", " ").trim();
     }
 
-    private static String generateTable(List<ProjectInfo> projects) {
+    private static String generateCards(List<ProjectInfo> projects) {
         if (projects.isEmpty()) return "*Нет проектов в этой категории*";
-
-        var sb = new StringBuilder();
-        sb.append("| Проект | Описание |\n");
-        sb.append("|--------|----------|\n");
-
+        List<String> cards = new ArrayList<>();
         for (var p : projects) {
-            String desc = cell(p.description());
-            String details = cell(p.details());
-            sb.append("| [**").append(p.title()).append("**](").append(p.url()).append(")");
-            sb.append(" | ").append(desc.isEmpty() ? "—" : desc);
-            if (!details.isEmpty()) {
-                sb.append("<br><sub>").append(details).append("</sub>");
-            }
-            sb.append(" |\n");
+            cards.add(renderCard(p));
         }
-        return sb.toString().stripTrailing();
+        return String.join("\n\n---\n\n", cards);
     }
 
-    private static String generateVelocityTable(List<ProjectInfo> projects) {
-        record Row(ProjectInfo p, Metrics m) {}
-        List<Row> rows = new ArrayList<>();
-        for (var p : projects) {
-            if (p.facts() != null) {
-                rows.add(new Row(p, Metrics.of(p.facts(), p.plan())));
-            }
-        }
-        if (rows.isEmpty()) return "*Нет данных*";
-        rows.sort(Comparator.comparingDouble((Row r) -> r.m().overall()).reversed());
-
+    private static String renderCard(ProjectInfo p) {
+        JSONObject c = p.card();
         var sb = new StringBuilder();
-        sb.append("| Проект | Период | 🔄 Коммитов/день | 📅 План | 💻 Строк/день | ⚡ Скорость |\n");
-        sb.append("|--------|--------|------------------|---------|---------------|-------------|\n");
 
-        for (var r : rows) {
-            Metrics m = r.m();
-            Plan pl = r.p().plan();
+        String emoji = c == null ? "" : c.optString("emoji", "").trim();
+        if (emoji.isEmpty() || emoji.length() > 8) emoji = "📦";
+        sb.append("### ").append(emoji).append(" ").append(p.title()).append("\n\n");
 
-            String plan = "—";
-            if (pl != null) {
-                plan = pl.completed() + "/" + pl.total() + " (" + m.planPercent() + "%)"
-                        + (m.planSpeed() != null ? " " + status(m.planSpeed()) : "");
-                if (!pl.current().isEmpty()) {
-                    plan += "<br><sub>" + cell(pl.current()) + "</sub>";
-                }
+        if (!p.description().isEmpty()) {
+            sb.append("**").append(cell(p.description())).append("**\n\n");
+        }
+        if (c == null) {
+            return sb.append("[→ Смотреть код на GitHub](").append(p.url()).append(")").toString();
+        }
+
+        field(sb, "Что делает", c.optString("what_it_does", ""));
+        field(sb, "Какую боль закрывает", c.optString("pain", ""));
+
+        JSONObject r = c.optJSONObject("ratings");
+        if (r != null) {
+            sb.append("#### 📊 Оценки проекта\n\n");
+            sb.append("| Показатель | Значение | Комментарий |\n");
+            sb.append("|------------|----------|-------------|\n");
+            ratingRow(sb, "🔬 Научная сложность", r.optJSONObject("science"));
+            ratingRow(sb, "🛠 Техническая сложность", r.optJSONObject("tech"));
+            ratingRow(sb, "💡 Оригинальность", r.optJSONObject("originality"));
+            ratingRow(sb, "🎯 Амбициозность", r.optJSONObject("ambition"));
+            sb.append("\n<sub>Оценки сгенерированы ИИ по README и ROADMAP проекта</sub>\n\n");
+        }
+
+        if (p.facts() != null) {
+            renderSpeed(sb, p.facts(), p.plan());
+        }
+
+        field(sb, "Ключевые основы", c.optString("foundations", ""));
+        field(sb, "Особенность", c.optString("feature", ""));
+        sb.append("[→ Смотреть код на GitHub](").append(p.url()).append(")");
+        return sb.toString();
+    }
+
+    private static void field(StringBuilder sb, String label, String text) {
+        String t = cell(text == null ? "" : text);
+        if (!t.isEmpty()) {
+            sb.append("**").append(label).append(":** ").append(t).append("\n\n");
+        }
+    }
+
+    private static void ratingRow(StringBuilder sb, String label, JSONObject o) {
+        if (o == null) return;
+        int score = Math.max(1, Math.min(10, o.optInt("score", 0)));
+        if (o.optInt("score", 0) <= 0) return;
+        sb.append("| ").append(label).append(" | ").append(score).append("/10 | ")
+                .append(cell(o.optString("comment", ""))).append(" |\n");
+    }
+
+    private static void renderSpeed(StringBuilder sb, Facts f, Plan plan) {
+        Metrics m = Metrics.of(f, plan);
+        sb.append("#### ⚡ Скорость работы\n\n");
+        sb.append("| Метрика | Значение | Статус |\n");
+        sb.append("|---------|----------|--------|\n");
+
+        sb.append("| 🔄 Коммитов в день | ")
+                .append(String.format(Locale.ROOT, "%.1f", m.commitsPerDay())).append(" | ")
+                .append(status(m.commitSpeed())).append(" ")
+                .append(String.format(Locale.ROOT, "%.1fx", m.commitSpeed()))
+                .append(m.commitSpeed() >= 1 ? " быстрее среднего" : " от среднего").append(" |\n");
+
+        if (plan != null) {
+            sb.append("| 📅 Выполнение плана | ").append(m.planPercent()).append("% | ");
+            if (m.planSpeed() != null) {
+                sb.append(status(m.planSpeed())).append(" ")
+                        .append(String.format(Locale.ROOT, "%.2fx от графика", m.planSpeed()));
+            } else {
+                sb.append("—");
             }
-            String lines = m.linesPerDay() == null ? "—"
-                    : String.format(Locale.ROOT, "%.0f %s", m.linesPerDay(), status(m.intensity()));
-
-            sb.append("| [**").append(r.p().title()).append("**](").append(r.p().url()).append(")");
-            sb.append(" | ").append(m.days()).append(" дн.");
-            sb.append(" | ").append(String.format(Locale.ROOT, "%.1f %s", m.commitsPerDay(), status(m.commitSpeed())));
-            sb.append(" | ").append(plan);
-            sb.append(" | ").append(lines);
-            sb.append(" | ").append(String.format(Locale.ROOT, "**%.2fx** %s", m.overall(), label(m.overall())));
             sb.append(" |\n");
         }
-        return sb.toString().stripTrailing();
+
+        if (m.linesPerDay() != null) {
+            sb.append("| 💻 Строк кода в день | ")
+                    .append(String.format(Locale.ROOT, "%.0f", m.linesPerDay())).append(" | ")
+                    .append(status(m.intensity())).append(" ")
+                    .append(String.format(Locale.ROOT, "%.1fx", m.intensity()))
+                    .append(m.intensity() >= 1 ? " выше среднего" : " от среднего").append(" |\n");
+        }
+
+        sb.append("| **⚡ Общий коэффициент** | ")
+                .append(String.format(Locale.ROOT, "**%.2fx**", m.overall())).append(" | **")
+                .append(label(m.overall())).append("** |\n\n");
+
+        sb.append("**Период разработки:** ").append(m.days()).append(" дн. (")
+                .append(RU_DATE.format(day(f.first()))).append(" — ")
+                .append(RU_DATE.format(day(f.last()))).append(")  \n");
+        if (plan != null) {
+            if (!plan.current().isEmpty()) {
+                sb.append("**Текущий этап:** ").append(cell(plan.current())).append("  \n");
+            }
+            sb.append("**Прогресс:** ").append(plan.completed()).append("/").append(plan.total())
+                    .append(" этапов завершено  \n");
+        }
+        sb.append("\n");
     }
 
     private static String status(double v) {
@@ -562,12 +616,12 @@ public class ProfileUpdater {
         return LocalDate.ofInstant(Instant.parse(iso), ZoneOffset.UTC);
     }
 
-    record MetaInfo(String title, String description, String category, String details) {}
+    record MetaInfo(String title, String description, String category) {}
     record Facts(int commits, String first, String last, long additions) {}
     record Plan(int total, int completed, String current, Integer plannedDays) {}
-    record Analysis(String details, Plan plan) {}
-    record Enriched(String details, Facts facts, Plan plan) {}
-    record ProjectInfo(String title, String description, String details, String url, Facts facts, Plan plan) {}
+    record Analysis(JSONObject card, Plan plan) {}
+    record Enriched(JSONObject card, Facts facts, Plan plan) {}
+    record ProjectInfo(String title, String description, JSONObject card, String url, Facts facts, Plan plan) {}
 
     record Metrics(long days, double commitsPerDay, Double linesPerDay, double commitSpeed,
                    Double intensity, Integer planPercent, Double planSpeed, double overall) {
