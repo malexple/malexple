@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,7 +36,7 @@ public class ProfileUpdater {
         // 1. Получаем все публичные репозитории
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.github.com/users/" + USERNAME
-                        + "/repos?per_page=100&type=public&sort=updated"))
+                        + "/repos?per_page=100&sort=updated"))
                 .header("Authorization", "token " + TOKEN)
                 .header("Accept", "application/vnd.github.v3+json")
                 .header("User-Agent", "ProfileUpdater/1.0")
@@ -64,11 +65,10 @@ public class ProfileUpdater {
 
             String url = repo.getString("html_url");
 
-            // Пробуем прочитать metadataInfo.yaml
             var meta = fetchMetadata(client, repoName);
 
             if (meta != null && meta.category() != null && !meta.category().isEmpty()) {
-                String title = meta.title() != null ? meta.title() : repoName;
+                String title = meta.title() != null && !meta.title().isEmpty() ? meta.title() : repoName;
                 String desc = meta.description() != null ? meta.description() : "";
 
                 categorized.computeIfAbsent(meta.category(), k -> new ArrayList<>())
@@ -94,9 +94,11 @@ public class ProfileUpdater {
         String readme = Files.readString(readmePath);
         Matcher matcher = CATEGORY_PATTERN.matcher(readme);
         Map<String, String> replacements = new LinkedHashMap<>();
+        Set<String> markers = new HashSet<>();
 
         while (matcher.find()) {
             String section = matcher.group(1).trim();
+            markers.add(section);
             List<ProjectInfo> projects = categorized.getOrDefault(section, Collections.emptyList());
 
             String table = generateTable(projects);
@@ -108,6 +110,13 @@ public class ProfileUpdater {
             System.out.println("✓ Раздел '" + section + "': " + projects.size() + " проектов");
         }
 
+        // Категории из metadataInfo.yaml, для которых в README нет маркера
+        for (String category : categorized.keySet()) {
+            if (!markers.contains(category)) {
+                System.out.println("⚠ Нет маркера в README для категории: '" + category + "'");
+            }
+        }
+
         StringBuilder updated = new StringBuilder(readme);
         for (var entry : replacements.entrySet()) {
             int idx = updated.indexOf(entry.getKey());
@@ -116,7 +125,7 @@ public class ProfileUpdater {
             }
         }
 
-        Files.writeString(readmePath, updated.toString());
+        Files.writeString(readmePath, updated.toString(), StandardCharsets.UTF_8);
         System.out.println("\n✅ README обновлён!");
 
         // 4. Выводим список проектов без метаданных
@@ -144,20 +153,23 @@ public class ProfileUpdater {
 
             JSONObject obj = new JSONObject(resp.body());
             String b64 = obj.getString("content").replaceAll("\\s", "");
-            String content = new String(Base64.getDecoder().decode(b64));
+            String content = new String(Base64.getDecoder().decode(b64), StandardCharsets.UTF_8);
 
-            @SuppressWarnings("unchecked")
             Map<String, Object> map = yaml.load(content);
+            if (map == null) {
+                return null;
+            }
 
-            String title = map.containsKey("title") ? (String) map.get("title") : null;
-            String desc = map.containsKey("description") ? (String) map.get("description") : null;
-            String cat = map.containsKey("category") ? (String) map.get("category") : null;
-
-            return new MetaInfo(title, desc, cat);
+            return new MetaInfo(str(map, "title"), str(map, "description"), str(map, "category"));
         } catch (Exception e) {
             System.err.println("⚠ Ошибка чтения " + repoName + "/metadataInfo.yaml: " + e.getMessage());
             return null;
         }
+    }
+
+    private static String str(Map<String, Object> map, String key) {
+        Object v = map.get(key);
+        return v == null ? null : String.valueOf(v).trim();
     }
 
     // Генерируем таблицу для README
@@ -169,8 +181,9 @@ public class ProfileUpdater {
         sb.append("|--------|----------|\n");
 
         for (var p : projects) {
+            String desc = p.description().replace("|", "\\|").replaceAll("\\s*\\R\\s*", " ").trim();
             sb.append("| [**").append(p.title()).append("**](").append(p.url()).append(")");
-            sb.append(" | ").append(p.description().isEmpty() ? "—" : p.description());
+            sb.append(" | ").append(desc.isEmpty() ? "—" : desc);
             sb.append(" |\n");
         }
         return sb.toString();
