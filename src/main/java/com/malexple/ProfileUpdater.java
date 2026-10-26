@@ -15,6 +15,8 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -32,10 +34,17 @@ public class ProfileUpdater {
     private static final int MAX_REFRESHES = 15;
     private static final int README_LIMIT = 12_000;
     private static final int ROADMAP_LIMIT = 6_000;
+    private static final int MAX_COMMIT_PAGES = 30;
+    private static final int MONTHS_SHOWN = 12;
+    private static final int ACTIVE_DAYS = 30;
+    private static final int QUIET_DAYS = 90;
+    private static final String STATS_KEY = "__stats__";
     private static final String GH_JSON = "application/vnd.github.v3+json";
     private static final Path CACHE_PATH = Paths.get("ai-descriptions.json");
+    private static final ZoneId MSK = ZoneId.of("Europe/Moscow");
     private static final DateTimeFormatter RU_DATE =
             DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.forLanguageTag("ru"));
+    private static final DateTimeFormatter DOT_DATE = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     private static final double BASE_COMMITS = 0.5;
     private static final double BASE_LINES = 150.0;
@@ -49,7 +58,10 @@ public class ProfileUpdater {
             "<!--\\s*PROJECTS_TABLE_START:\\s*(.+?)\\s*-->(.*?)<!--\\s*PROJECTS_TABLE_END\\s*-->",
             Pattern.DOTALL
     );
-    private static final Pattern LAST_PAGE = Pattern.compile("page=(\\d+)>;\\s*rel=\"last\"");
+    private static final Pattern STATS_PATTERN = Pattern.compile(
+            "<!--\\s*STATS_START\\s*-->(.*?)<!--\\s*STATS_END\\s*-->",
+            Pattern.DOTALL
+    );
 
     public static void main(String[] args) throws Exception {
         HttpClient client = HttpClient.newBuilder()
@@ -76,6 +88,7 @@ public class ProfileUpdater {
 
         JSONArray repos = new JSONArray(response.body());
         Map<String, List<ProjectInfo>> categorized = new LinkedHashMap<>();
+        List<RepoRow> rows = new ArrayList<>();
         List<String> processed = new ArrayList<>();
         List<String> skipped = new ArrayList<>();
 
@@ -89,21 +102,31 @@ public class ProfileUpdater {
 
             String url = repo.getString("html_url");
             String pushedAt = repo.optString("pushed_at", "");
+            String createdAt = repo.optString("created_at", "");
 
+            Stat stat = resolveStat(client, repoName, pushedAt, cache);
             var meta = fetchMetadata(client, repoName);
 
-            if (meta != null && meta.category() != null && !meta.category().isEmpty()) {
-                String title = meta.title() != null && !meta.title().isEmpty() ? meta.title() : repoName;
-                String desc = meta.description() != null ? meta.description() : "";
-                Enriched e = resolve(client, repoName, meta, pushedAt, cache, budget);
+            String title = repoName;
+            String category = null;
+            Enriched e = null;
 
-                categorized.computeIfAbsent(meta.category(), k -> new ArrayList<>())
+            if (meta != null && meta.category() != null && !meta.category().isEmpty()) {
+                title = meta.title() != null && !meta.title().isEmpty() ? meta.title() : repoName;
+                category = meta.category();
+                String desc = meta.description() != null ? meta.description() : "";
+                e = resolve(client, repoName, meta, pushedAt, cache, budget, stat);
+
+                categorized.computeIfAbsent(category, k -> new ArrayList<>())
                         .add(new ProjectInfo(title, desc, e.card(), url, e.facts(), e.plan()));
                 processed.add(repoName);
-                System.out.println("✓ " + repoName + " → " + meta.category());
+                System.out.println("✓ " + repoName + " → " + category);
             } else {
                 skipped.add(repoName);
             }
+
+            rows.add(new RepoRow(title, url, category, createdAt, pushedAt, stat,
+                    e == null ? null : e.facts(), e == null ? null : e.plan()));
         }
 
         System.out.println("\n📊 Обработано: " + processed.size() + " проектов");
@@ -150,7 +173,16 @@ public class ProfileUpdater {
             }
         }
 
-        Files.writeString(readmePath, updated.toString(), StandardCharsets.UTF_8);
+        String result = updated.toString();
+        Matcher sm = STATS_PATTERN.matcher(result);
+        if (sm.find()) {
+            String block = "<!-- STATS_START -->\n\n" + generateStats(rows) + "\n\n<!-- STATS_END -->";
+            result = result.substring(0, sm.start()) + block + result.substring(sm.end());
+        } else {
+            System.out.println("ℹ В README нет маркеров STATS_START / STATS_END");
+        }
+
+        Files.writeString(readmePath, result, StandardCharsets.UTF_8);
         System.out.println("\n✅ README обновлён!");
 
         if (!skipped.isEmpty()) {
@@ -209,43 +241,49 @@ public class ProfileUpdater {
         return body.length() > limit ? body.substring(0, limit) : body;
     }
 
-    private static Facts fetchFacts(HttpClient client, String repo) throws Exception {
-        String base = "https://api.github.com/repos/" + USERNAME + "/" + repo;
-        HttpResponse<String> r1 = client.send(githubRequest(base + "/commits?per_page=1", GH_JSON),
-                HttpResponse.BodyHandlers.ofString());
-        if (r1.statusCode() != 200) {
-            return null;
-        }
-        JSONArray head = new JSONArray(r1.body());
-        if (head.isEmpty()) {
-            return null;
-        }
-
-        String last = commitDate(head.getJSONObject(0));
-        String first = last;
-        int commits = 1;
-
-        Optional<String> link = r1.headers().firstValue("Link");
-        if (link.isPresent()) {
-            Matcher m = LAST_PAGE.matcher(link.get());
-            if (m.find()) {
-                commits = Integer.parseInt(m.group(1));
-                HttpResponse<String> r2 = client.send(
-                        githubRequest(base + "/commits?per_page=1&page=" + commits, GH_JSON),
-                        HttpResponse.BodyHandlers.ofString());
-                if (r2.statusCode() == 200) {
-                    JSONArray oldest = new JSONArray(r2.body());
-                    if (!oldest.isEmpty()) {
-                        first = commitDate(oldest.getJSONObject(0));
-                    }
-                }
-            }
-        }
-        return new Facts(commits, first, last, fetchAdditions(client, base));
-    }
-
     private static String commitDate(JSONObject commit) {
         return commit.getJSONObject("commit").getJSONObject("author").getString("date");
+    }
+
+    // Вся история коммитов (до MAX_COMMIT_PAGES страниц) + топ-3 языка
+    private static Stat fetchStat(HttpClient client, String repo) throws Exception {
+        String base = "https://api.github.com/repos/" + USERNAME + "/" + repo;
+        Map<String, Integer> months = new TreeMap<>();
+        int commits = 0;
+        String first = null;
+        String last = null;
+
+        for (int page = 1; page <= MAX_COMMIT_PAGES; page++) {
+            HttpResponse<String> r = client.send(
+                    githubRequest(base + "/commits?per_page=100&page=" + page, GH_JSON),
+                    HttpResponse.BodyHandlers.ofString());
+            if (r.statusCode() == 409 && page == 1) {
+                break; // пустой репозиторий
+            }
+            if (r.statusCode() != 200) {
+                return null;
+            }
+            JSONArray arr = new JSONArray(r.body());
+            for (int i = 0; i < arr.length(); i++) {
+                String date = commitDate(arr.getJSONObject(i));
+                if (last == null) last = date;
+                first = date;
+                months.merge(YearMonth.from(Instant.parse(date).atZone(MSK)).toString(), 1, Integer::sum);
+            }
+            commits += arr.length();
+            if (arr.length() < 100) break;
+        }
+
+        List<String> langs = new ArrayList<>();
+        HttpResponse<String> lr = client.send(githubRequest(base + "/languages", GH_JSON),
+                HttpResponse.BodyHandlers.ofString());
+        if (lr.statusCode() == 200) {
+            JSONObject lo = new JSONObject(lr.body());
+            langs = new ArrayList<>(lo.keySet().stream()
+                    .sorted((a, b) -> Long.compare(lo.getLong(b), lo.getLong(a)))
+                    .limit(3).toList());
+        }
+        return new Stat(commits, first, last, langs, months);
     }
 
     // GitHub считает статистику лениво: сначала 202, через пару секунд 200
@@ -269,10 +307,65 @@ public class ProfileUpdater {
         return -1;
     }
 
+    // ---------- Статистика репозитория: кэш по pushed_at ----------
+
+    private static Stat resolveStat(HttpClient client, String repo, String pushedAt, JSONObject cache) {
+        JSONObject all = cache.optJSONObject(STATS_KEY);
+        if (all == null) {
+            all = new JSONObject();
+            cache.put(STATS_KEY, all);
+        }
+        JSONObject c = all.optJSONObject(repo);
+        if (c != null && pushedAt.equals(c.optString("stamp"))) {
+            return statFromCache(c);
+        }
+        try {
+            Stat s = fetchStat(client, repo);
+            if (s != null) {
+                all.put(repo, statToCache(pushedAt, s));
+                return s;
+            }
+        } catch (Exception e) {
+            System.err.println("⚠ Статистика " + repo + ": " + e.getMessage());
+        }
+        return c != null ? statFromCache(c) : null;
+    }
+
+    private static JSONObject statToCache(String stamp, Stat s) {
+        return new JSONObject()
+                .put("stamp", stamp)
+                .put("commits", s.commits())
+                .put("first", s.first() == null ? "" : s.first())
+                .put("last", s.last() == null ? "" : s.last())
+                .put("langs", new JSONArray(s.langs()))
+                .put("months", new JSONObject(s.months()));
+    }
+
+    private static Stat statFromCache(JSONObject c) {
+        Map<String, Integer> months = new TreeMap<>();
+        JSONObject mo = c.optJSONObject("months");
+        if (mo != null) {
+            for (String k : mo.keySet()) {
+                months.put(k, mo.getInt(k));
+            }
+        }
+        List<String> langs = new ArrayList<>();
+        JSONArray la = c.optJSONArray("langs");
+        if (la != null) {
+            for (int i = 0; i < la.length(); i++) {
+                langs.add(la.getString(i));
+            }
+        }
+        String first = c.optString("first", "");
+        String last = c.optString("last", "");
+        return new Stat(c.optInt("commits", 0), first.isEmpty() ? null : first,
+                last.isEmpty() ? null : last, langs, months);
+    }
+
     // ---------- Анализ: кэш > Gemini ----------
 
     private static Enriched resolve(HttpClient client, String repo, MetaInfo meta, String pushedAt,
-                                    JSONObject cache, int[] budget) {
+                                    JSONObject cache, int[] budget, Stat stat) {
         JSONObject cached = cache.optJSONObject(repo);
         Enriched old = cached == null ? new Enriched(null, null, null) : fromCache(cached);
 
@@ -293,10 +386,12 @@ public class ProfileUpdater {
         }
 
         try {
-            Facts facts = fetchFacts(client, repo);
+            if (stat == null || stat.commits() == 0) {
+                return old;
+            }
             String readme = fetchRaw(client, "https://api.github.com/repos/" + USERNAME + "/" + repo
                     + "/readme", README_LIMIT);
-            if (facts == null || readme == null || readme.isBlank()) {
+            if (readme == null || readme.isBlank()) {
                 return old;
             }
             String roadmap = fetchRaw(client, "https://api.github.com/repos/" + USERNAME + "/" + repo
@@ -306,6 +401,8 @@ public class ProfileUpdater {
             if (a == null) {
                 return old;
             }
+            Facts facts = new Facts(stat.commits(), stat.first(), stat.last(),
+                    fetchAdditions(client, "https://api.github.com/repos/" + USERNAME + "/" + repo));
             Enriched fresh = new Enriched(a.card(), facts, a.plan());
             cache.put(repo, toCache(stamp, fresh));
             System.out.println("🤖 " + repo + ": проанализирован");
@@ -543,9 +640,8 @@ public class ProfileUpdater {
     }
 
     private static void ratingRow(StringBuilder sb, String label, JSONObject o) {
-        if (o == null) return;
+        if (o == null || o.optInt("score", 0) <= 0) return;
         int score = Math.max(1, Math.min(10, o.optInt("score", 0)));
-        if (o.optInt("score", 0) <= 0) return;
         sb.append("| ").append(label).append(" | ").append(score).append("/10 | ")
                 .append(cell(o.optString("comment", ""))).append(" |\n");
     }
@@ -616,12 +712,118 @@ public class ProfileUpdater {
         return LocalDate.ofInstant(Instant.parse(iso), ZoneOffset.UTC);
     }
 
+    // ---------- Статистика ----------
+
+    private static LocalDate dayMsk(String iso) {
+        return Instant.parse(iso).atZone(MSK).toLocalDate();
+    }
+
+    private static String dot(String iso) {
+        return iso == null || iso.isEmpty() ? "—" : DOT_DATE.format(dayMsk(iso));
+    }
+
+    private static String activity(String pushedIso) {
+        if (pushedIso == null || pushedIso.isEmpty()) return "—";
+        long d = ChronoUnit.DAYS.between(dayMsk(pushedIso), LocalDate.now(MSK));
+        return d <= ACTIVE_DAYS ? "🟢 активен" : d <= QUIET_DAYS ? "🟡 затишье" : "⚪ заморожен";
+    }
+
+    private static String generateStats(List<RepoRow> rows) {
+        if (rows.isEmpty()) return "*Нет данных*";
+
+        YearMonth now = YearMonth.now(MSK);
+        List<YearMonth> months = new ArrayList<>();
+        for (int i = MONTHS_SHOWN - 1; i >= 0; i--) {
+            months.add(now.minusMonths(i));
+        }
+        int[] created = new int[MONTHS_SHOWN];
+        int[] commits = new int[MONTHS_SHOWN];
+        int[] active = new int[MONTHS_SHOWN];
+
+        for (int i = 0; i < MONTHS_SHOWN; i++) {
+            YearMonth m = months.get(i);
+            for (RepoRow r : rows) {
+                if (!r.created().isEmpty()
+                        && YearMonth.from(Instant.parse(r.created()).atZone(MSK)).equals(m)) {
+                    created[i]++;
+                }
+                if (r.stat() != null) {
+                    int c = r.stat().months().getOrDefault(m.toString(), 0);
+                    commits[i] += c;
+                    if (c > 0) active[i]++;
+                }
+            }
+        }
+
+        int totalCommits = rows.stream().mapToInt(r -> r.stat() == null ? 0 : r.stat().commits()).sum();
+        long active30 = rows.stream().filter(r -> activity(r.pushed()).startsWith("🟢")).count();
+        int last12 = Arrays.stream(commits).sum();
+
+        var sb = new StringBuilder();
+        sb.append(String.format(Locale.ROOT,
+                "**Проектов:** %d · **Коммитов всего:** %d · **Активных за %d дн.:** %d · **В среднем:** %.0f коммитов в месяц\n\n",
+                rows.size(), totalCommits, ACTIVE_DAYS, active30, last12 / (double) MONTHS_SHOWN));
+
+        sb.append("#### 📅 По месяцам\n\n");
+        sb.append("| Месяц | Новых проектов | Коммитов | Активных проектов |\n");
+        sb.append("|-------|----------------|----------|-------------------|\n");
+        for (int i = MONTHS_SHOWN - 1; i >= 0; i--) {
+            sb.append("| ").append(months.get(i)).append(" | ").append(created[i]).append(" | ")
+                    .append(commits[i]).append(" | ").append(active[i]).append(" |\n");
+        }
+
+        int maxCommits = Arrays.stream(commits).max().orElse(0);
+        int yMax = Math.max(1, (int) Math.ceil(maxCommits * 1.1));
+        StringJoiner xs = new StringJoiner(", ");
+        StringJoiner ys = new StringJoiner(", ");
+        for (int i = 0; i < MONTHS_SHOWN; i++) {
+            xs.add("\"" + months.get(i) + "\"");
+            ys.add(String.valueOf(commits[i]));
+        }
+        sb.append("\n```mermaid\nxychart-beta\n")
+                .append("    title \"Коммиты по месяцам\"\n")
+                .append("    x-axis [").append(xs).append("]\n")
+                .append("    y-axis \"Коммитов\" 0 --> ").append(yMax).append("\n")
+                .append("    bar [").append(ys).append("]\n```\n\n");
+
+        sb.append("#### 🗂 Все проекты\n\n");
+        sb.append("| Проект | Тема | Стек | Создан | Изменён | Коммитов | Статус | ⚡ |\n");
+        sb.append("|--------|------|------|--------|---------|----------|--------|----|\n");
+
+        List<RepoRow> sorted = new ArrayList<>(rows);
+        sorted.sort(Comparator.comparing(RepoRow::pushed).reversed());
+        for (RepoRow r : sorted) {
+            String theme = r.category() == null ? "—" : cell(r.category());
+            String stack = r.stat() == null || r.stat().langs().isEmpty() ? "—"
+                    : cell(String.join(", ", r.stat().langs()));
+            int c = r.stat() == null ? 0 : r.stat().commits();
+            String speed = "—";
+            if (r.facts() != null) {
+                double o = Metrics.of(r.facts(), r.plan()).overall();
+                speed = String.format(Locale.ROOT, "%.2fx %s", o, status(o));
+            }
+            sb.append("| [**").append(r.title()).append("**](").append(r.url()).append(")")
+                    .append(" | ").append(theme)
+                    .append(" | ").append(stack)
+                    .append(" | ").append(dot(r.created()))
+                    .append(" | ").append(dot(r.pushed()))
+                    .append(" | ").append(c)
+                    .append(" | ").append(activity(r.pushed()))
+                    .append(" | ").append(speed)
+                    .append(" |\n");
+        }
+        return sb.toString().stripTrailing();
+    }
+
     record MetaInfo(String title, String description, String category) {}
     record Facts(int commits, String first, String last, long additions) {}
     record Plan(int total, int completed, String current, Integer plannedDays) {}
     record Analysis(JSONObject card, Plan plan) {}
     record Enriched(JSONObject card, Facts facts, Plan plan) {}
     record ProjectInfo(String title, String description, JSONObject card, String url, Facts facts, Plan plan) {}
+    record Stat(int commits, String first, String last, List<String> langs, Map<String, Integer> months) {}
+    record RepoRow(String title, String url, String category, String created, String pushed,
+                   Stat stat, Facts facts, Plan plan) {}
 
     record Metrics(long days, double commitsPerDay, Double linesPerDay, double commitSpeed,
                    Double intensity, Integer planPercent, Double planSpeed, double overall) {
