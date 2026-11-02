@@ -306,12 +306,13 @@
 
 <!-- STATS_START -->
 
-**Проектов:** 44 · **Коммитов всего:** 798 · **Активных за 30 дн.:** 11 · **В среднем:** 41 коммитов в месяц
+**Проектов:** 44 · **Коммитов всего:** 798 · **Активных за 30 дн.:** 10 · **В среднем:** 40 коммитов в месяц
 
 #### 📅 По месяцам
 
 | Месяц | Новых проектов | Коммитов | Активных проектов |
 |-------|----------------|----------|-------------------|
+| 2026-11 | 0 | 0 | 0 |
 | 2026-10 | 6 | 75 | 11 |
 | 2026-09 | 7 | 63 | 9 |
 | 2026-08 | 3 | 106 | 5 |
@@ -323,14 +324,13 @@
 | 2026-02 | 0 | 5 | 2 |
 | 2026-01 | 3 | 33 | 4 |
 | 2025-12 | 0 | 21 | 2 |
-| 2025-11 | 1 | 16 | 3 |
 
 ```mermaid
 xychart-beta
     title "Коммиты по месяцам"
-    x-axis ["2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09", "2026-10"]
+    x-axis ["2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09", "2026-10", "2026-11"]
     y-axis "Коммитов" 0 --> 117
-    bar [16, 21, 33, 5, 45, 21, 0, 33, 77, 106, 63, 75]
+    bar [21, 33, 5, 45, 21, 0, 33, 77, 106, 63, 75, 0]
 ```
 
 #### 🗂 Все проекты
@@ -347,7 +347,7 @@ xychart-beta
 | [**sysmon**](https://github.com/malexple/sysmon) | — | Java | 19.09.2026 | 15.10.2026 | 15 | 🟢 активен | — |
 | [**scan-ocr**](https://github.com/malexple/scan-ocr) | — | Java | 15.10.2026 | 15.10.2026 | 1 | 🟢 активен | — |
 | [**docker-secret-launcher**](https://github.com/malexple/docker-secret-launcher) | — | Java | 06.10.2026 | 06.10.2026 | 3 | 🟢 активен | — |
-| [**nomad**](https://github.com/malexple/nomad) | — | Java, Kotlin | 30.09.2026 | 01.10.2026 | 10 | 🟢 активен | — |
+| [**nomad**](https://github.com/malexple/nomad) | — | Java, Kotlin | 30.09.2026 | 01.10.2026 | 10 | 🟡 затишье | — |
 | [**keepass-copy-key**](https://github.com/malexple/keepass-copy-key) | — | C#, PowerShell | 24.09.2026 | 24.09.2026 | 10 | 🟡 затишье | — |
 | [**keepasshttp2-browser**](https://github.com/malexple/keepasshttp2-browser) | — | TypeScript, HTML | 22.09.2026 | 24.09.2026 | 3 | 🟡 затишье | — |
 | [**keepasshttp2**](https://github.com/malexple/keepasshttp2) | — | C#, Python, PowerShell | 19.09.2026 | 24.09.2026 | 22 | 🟡 затишье | — |
@@ -355,7 +355,7 @@ xychart-beta
 | [**fondoscan**](https://github.com/malexple/fondoscan) | — | Java, Dockerfile | 02.09.2026 | 02.09.2026 | 5 | 🟡 затишье | — |
 | [**alifba**](https://github.com/malexple/alifba) | — | Assembly | 12.08.2026 | 12.08.2026 | 13 | 🟡 затишье | — |
 | [**ellochka-zig**](https://github.com/malexple/ellochka-zig) | — | Zig | 04.08.2026 | 11.08.2026 | 58 | 🟡 затишье | — |
-| [**wiremock-js-extension**](https://github.com/malexple/wiremock-js-extension) | — | Java, ANTLR | 24.07.2026 | 02.08.2026 | 20 | 🟡 затишье | — |
+| [**wiremock-js-extension**](https://github.com/malexple/wiremock-js-extension) | — | Java, ANTLR | 24.07.2026 | 02.08.2026 | 20 | ⚪ заморожен | — |
 | [**ai-proxy**](https://github.com/malexple/ai-proxy) | — | Java, Dockerfile | 09.07.2026 | 12.07.2026 | 15 | ⚪ заморожен | — |
 | [**bdoc-editor**](https://github.com/malexple/bdoc-editor) | — | Java, CSS | 03.07.2026 | 08.07.2026 | 43 | ⚪ заморожен | — |
 | [**solomon-seal**](https://github.com/malexple/solomon-seal) | — | Java | 01.07.2026 | 01.07.2026 | 10 | ⚪ заморожен | — |
