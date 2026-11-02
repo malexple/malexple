@@ -296,6 +296,11 @@
 <!-- PROJECTS_TABLE_END -->
 
 ---
+<!-- PROJECTS_TABLE_START: Эксперименты -->
+
+<!-- PROJECTS_TABLE_END -->
+
+---
 
 ## 📈 Статистика
 
