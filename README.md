@@ -341,7 +341,7 @@
 
 <!-- STATS_START -->
 
-**Проектов:** 45 · **Коммитов всего:** 812 · **Активных за 30 дн.:** 12 · **В среднем:** 41 коммитов в месяц
+**Проектов:** 45 · **Коммитов всего:** 812 · **Активных за 30 дн.:** 11 · **В среднем:** 41 коммитов в месяц
 
 #### 📅 По месяцам
 
@@ -383,7 +383,7 @@ xychart-beta
 | [**stegobox**](https://github.com/malexple/stegobox) | — | Java | 15.10.2026 | 16.10.2026 | 5 | 🟢 активен | — |
 | [**sysmon**](https://github.com/malexple/sysmon) | — | Java | 19.09.2026 | 15.10.2026 | 15 | 🟢 активен | — |
 | [**scan-ocr**](https://github.com/malexple/scan-ocr) | — | Java | 15.10.2026 | 15.10.2026 | 1 | 🟢 активен | — |
-| [**docker-secret-launcher**](https://github.com/malexple/docker-secret-launcher) | — | Java | 06.10.2026 | 06.10.2026 | 3 | 🟢 активен | — |
+| [**docker-secret-launcher**](https://github.com/malexple/docker-secret-launcher) | — | Java | 06.10.2026 | 06.10.2026 | 3 | 🟡 затишье | — |
 | [**nomad**](https://github.com/malexple/nomad) | — | Java, Kotlin | 30.09.2026 | 01.10.2026 | 10 | 🟡 затишье | — |
 | [**keepass-copy-key**](https://github.com/malexple/keepass-copy-key) | — | C#, PowerShell | 24.09.2026 | 24.09.2026 | 10 | 🟡 затишье | — |
 | [**keepasshttp2-browser**](https://github.com/malexple/keepasshttp2-browser) | — | TypeScript, HTML | 22.09.2026 | 24.09.2026 | 3 | 🟡 затишье | — |
