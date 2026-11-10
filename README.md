@@ -392,7 +392,7 @@ xychart-beta
 | [**keepasshttp2**](https://github.com/malexple/keepasshttp2) | — | C#, Python, PowerShell | 19.09.2026 | 24.09.2026 | 22 | 🟡 затишье | — |
 | [**moon**](https://github.com/malexple/moon) | — | Python | 13.09.2026 | 13.09.2026 | 2 | 🟡 затишье | — |
 | [**fondoscan**](https://github.com/malexple/fondoscan) | — | Java, Dockerfile | 02.09.2026 | 02.09.2026 | 5 | 🟡 затишье | — |
-| [**alifba**](https://github.com/malexple/alifba) | — | Assembly | 12.08.2026 | 12.08.2026 | 13 | 🟡 затишье | — |
+| [**alifba**](https://github.com/malexple/alifba) | — | Assembly | 12.08.2026 | 12.08.2026 | 13 | ⚪ заморожен | — |
 | [**ellochka-zig**](https://github.com/malexple/ellochka-zig) | — | Zig | 04.08.2026 | 11.08.2026 | 58 | ⚪ заморожен | — |
 | [**wiremock-js-extension**](https://github.com/malexple/wiremock-js-extension) | — | Java, ANTLR | 24.07.2026 | 02.08.2026 | 20 | ⚪ заморожен | — |
 | [**ai-proxy**](https://github.com/malexple/ai-proxy) | — | Java, Dockerfile | 09.07.2026 | 12.07.2026 | 15 | ⚪ заморожен | — |
