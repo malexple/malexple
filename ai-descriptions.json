@@ -272,11 +272,14 @@
       "first": "2026-10-15T08:45:12Z"
     },
     "manuscriptium": {
-      "stamp": "2026-11-14T01:51:45Z",
-      "commits": 32,
-      "langs": ["Java"],
-      "months": {"2026-11": 32},
-      "last": "2026-11-14T01:41:24Z",
+      "stamp": "2026-11-14T14:28:16Z",
+      "commits": 34,
+      "langs": [
+        "Java",
+        "CSS"
+      ],
+      "months": {"2026-11": 34},
+      "last": "2026-11-14T14:28:04Z",
       "first": "2026-11-09T16:36:59Z"
     },
     "kafka-example": {
