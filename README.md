@@ -341,13 +341,13 @@
 
 <!-- STATS_START -->
 
-**Проектов:** 48 · **Коммитов всего:** 858 · **Активных за 30 дн.:** 14 · **В среднем:** 45 коммитов в месяц
+**Проектов:** 48 · **Коммитов всего:** 859 · **Активных за 30 дн.:** 12 · **В среднем:** 45 коммитов в месяц
 
 #### 📅 По месяцам
 
 | Месяц | Новых проектов | Коммитов | Активных проектов |
 |-------|----------------|----------|-------------------|
-| 2026-11 | 4 | 58 | 5 |
+| 2026-11 | 4 | 59 | 5 |
 | 2026-10 | 6 | 75 | 11 |
 | 2026-09 | 7 | 63 | 9 |
 | 2026-08 | 3 | 107 | 6 |
@@ -365,14 +365,14 @@ xychart-beta
     title "Коммиты по месяцам"
     x-axis ["2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09", "2026-10", "2026-11"]
     y-axis "Коммитов" 0 --> 118
-    bar [21, 33, 5, 45, 21, 0, 33, 78, 107, 63, 75, 58]
+    bar [21, 33, 5, 45, 21, 0, 33, 78, 107, 63, 75, 59]
 ```
 
 #### 🗂 Все проекты
 
 | Проект | Тема | Стек | Создан | Изменён | Коммитов | Статус | ⚡ |
 |--------|------|------|--------|---------|----------|--------|----|
-| [**manuscriptium**](https://github.com/malexple/manuscriptium) | — | Java, CSS | 09.11.2026 | 14.11.2026 | 34 | 🟢 активен | — |
+| [**manuscriptium**](https://github.com/malexple/manuscriptium) | — | Java, CSS | 09.11.2026 | 14.11.2026 | 35 | 🟢 активен | — |
 | [**scan-project**](https://github.com/malexple/scan-project) | — | Java | 13.11.2026 | 13.11.2026 | 5 | 🟢 активен | — |
 | [**dragon**](https://github.com/malexple/dragon) | — | Python | 07.11.2026 | 11.11.2026 | 5 | 🟢 активен | — |
 | [**vetrogenerator**](https://github.com/malexple/vetrogenerator) | Эксперименты | Python, Shell | 02.11.2026 | 06.11.2026 | 9 | 🟢 активен | 3636.45x 🟢🟢🟢 |
@@ -384,8 +384,8 @@ xychart-beta
 | [**neuro-worm**](https://github.com/malexple/neuro-worm) | — | Java | 17.10.2026 | 21.10.2026 | 28 | 🟢 активен | — |
 | [**soundbox**](https://github.com/malexple/soundbox) | — | Java | 18.10.2026 | 19.10.2026 | 7 | 🟢 активен | — |
 | [**stegobox**](https://github.com/malexple/stegobox) | — | Java | 15.10.2026 | 16.10.2026 | 5 | 🟢 активен | — |
-| [**sysmon**](https://github.com/malexple/sysmon) | — | Java | 19.09.2026 | 15.10.2026 | 15 | 🟢 активен | — |
-| [**scan-ocr**](https://github.com/malexple/scan-ocr) | — | Java | 15.10.2026 | 15.10.2026 | 1 | 🟢 активен | — |
+| [**sysmon**](https://github.com/malexple/sysmon) | — | Java | 19.09.2026 | 15.10.2026 | 15 | 🟡 затишье | — |
+| [**scan-ocr**](https://github.com/malexple/scan-ocr) | — | Java | 15.10.2026 | 15.10.2026 | 1 | 🟡 затишье | — |
 | [**docker-secret-launcher**](https://github.com/malexple/docker-secret-launcher) | — | Java | 06.10.2026 | 06.10.2026 | 3 | 🟡 затишье | — |
 | [**nomad**](https://github.com/malexple/nomad) | — | Java, Kotlin | 30.09.2026 | 01.10.2026 | 10 | 🟡 затишье | — |
 | [**keepass-copy-key**](https://github.com/malexple/keepass-copy-key) | — | C#, PowerShell | 24.09.2026 | 24.09.2026 | 10 | 🟡 затишье | — |
