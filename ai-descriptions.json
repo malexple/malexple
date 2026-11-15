@@ -168,25 +168,6 @@
       "last": "2026-10-15T15:04:57Z",
       "first": "2026-09-18T23:55:51Z"
     },
-    "docker-secret-launcher": {
-      "stamp": "2026-10-05T22:03:20Z",
-      "commits": 3,
-      "langs": ["Java"],
-      "months": {"2026-10": 3},
-      "last": "2026-10-05T22:03:11Z",
-      "first": "2026-10-05T21:33:31Z"
-    },
-    "vetrogenerator": {
-      "stamp": "2026-11-06T11:07:03Z",
-      "commits": 9,
-      "langs": [
-        "Python",
-        "Shell"
-      ],
-      "months": {"2026-11": 9},
-      "last": "2026-11-06T11:06:40Z",
-      "first": "2026-11-02T00:14:05Z"
-    },
     "bdoc-editor": {
       "stamp": "2026-07-08T11:15:56Z",
       "commits": 43,
@@ -212,17 +193,6 @@
       "last": "2023-11-02T23:10:07Z",
       "first": "2023-10-31T11:23:18Z"
     },
-    "fondoscan": {
-      "stamp": "2026-09-02T09:46:39Z",
-      "commits": 5,
-      "langs": [
-        "Java",
-        "Dockerfile"
-      ],
-      "months": {"2026-09": 5},
-      "last": "2026-09-02T09:46:31Z",
-      "first": "2026-09-01T21:13:44Z"
-    },
     "keepasshttp2-browser": {
       "stamp": "2026-09-24T01:15:38Z",
       "commits": 3,
@@ -233,6 +203,240 @@
       "months": {"2026-09": 3},
       "last": "2026-09-24T01:15:30Z",
       "first": "2026-09-22T11:47:10Z"
+    },
+    "dragon": {
+      "stamp": "2026-11-11T02:05:43Z",
+      "commits": 5,
+      "langs": ["Python"],
+      "months": {"2026-11": 5},
+      "last": "2026-11-07T14:17:32Z",
+      "first": "2026-11-06T17:25:25Z"
+    },
+    "stegobox": {
+      "stamp": "2026-10-16T08:43:14Z",
+      "commits": 5,
+      "langs": ["Java"],
+      "months": {"2026-10": 5},
+      "last": "2026-10-16T08:41:37Z",
+      "first": "2026-10-15T08:45:12Z"
+    },
+    "scan-ocr": {
+      "stamp": "2026-10-15T08:29:03Z",
+      "commits": 1,
+      "langs": ["Java"],
+      "months": {"2026-10": 1},
+      "last": "2026-10-15T08:28:51Z",
+      "first": "2026-10-15T08:28:51Z"
+    },
+    "udk-site-parser": {
+      "stamp": "2025-03-11T23:08:47Z",
+      "commits": 7,
+      "langs": ["Java"],
+      "months": {"2025-03": 7},
+      "last": "2025-03-11T18:36:54Z",
+      "first": "2025-03-06T19:22:30Z"
+    },
+    "postgresql-portable": {
+      "stamp": "2023-10-15T18:35:20Z",
+      "commits": 6,
+      "langs": ["Batchfile"],
+      "months": {
+        "2023-10": 1,
+        "2022-06": 5
+      },
+      "last": "2023-10-15T18:34:29Z",
+      "first": "2022-06-20T13:18:21Z"
+    },
+    "openapi-designer": {
+      "stamp": "2026-01-13T15:36:17Z",
+      "commits": 16,
+      "langs": [
+        "HTML",
+        "Java",
+        "Dockerfile"
+      ],
+      "months": {"2026-01": 16},
+      "last": "2026-01-13T15:35:50Z",
+      "first": "2026-01-13T09:00:26Z"
+    },
+    "keepasshttp2": {
+      "stamp": "2026-09-24T01:01:50Z",
+      "commits": 22,
+      "langs": [
+        "C#",
+        "Python",
+        "PowerShell"
+      ],
+      "months": {"2026-09": 22},
+      "last": "2026-09-24T01:01:42Z",
+      "first": "2026-09-18T14:13:40Z"
+    },
+    "spring-boot-market": {
+      "stamp": "2023-11-25T19:24:52Z",
+      "commits": 7,
+      "langs": ["Java"],
+      "months": {"2023-11": 7},
+      "last": "2023-11-25T19:24:44Z",
+      "first": "2023-11-09T18:42:32Z"
+    },
+    "book-metadata-service": {
+      "stamp": "2026-10-26T11:45:38Z",
+      "commits": 27,
+      "langs": [
+        "Java",
+        "HTML",
+        "Python"
+      ],
+      "months": {
+        "2026-10": 1,
+        "2026-08": 21,
+        "2026-09": 5
+      },
+      "last": "2026-10-26T10:51:44Z",
+      "first": "2026-08-17T18:01:42Z"
+    },
+    "rust-portable": {
+      "stamp": "2025-01-03T10:07:48Z",
+      "commits": 4,
+      "langs": [
+        "Perl",
+        "C",
+        "C++"
+      ],
+      "months": {
+        "2025-01": 2,
+        "2024-09": 2
+      },
+      "last": "2025-01-03T10:07:39Z",
+      "first": "2024-09-02T09:13:23Z"
+    },
+    "sopds": {
+      "stamp": "2026-06-12T13:08:22Z",
+      "commits": 41,
+      "langs": [
+        "HTML",
+        "Java",
+        "CSS"
+      ],
+      "months": {
+        "2025-12": 15,
+        "2025-11": 8,
+        "2026-06": 18
+      },
+      "last": "2026-06-12T13:08:12Z",
+      "first": "2025-11-09T21:27:46Z"
+    },
+    "indexer": {
+      "stamp": "2026-11-15T00:43:48Z",
+      "commits": 8,
+      "langs": [
+        "Java",
+        "Python"
+      ],
+      "months": {"2026-11": 8},
+      "last": "2026-11-15T00:43:40Z",
+      "first": "2026-11-14T21:21:16Z"
+    },
+    "quant": {
+      "stamp": "2026-04-28T09:04:03Z",
+      "commits": 12,
+      "langs": ["Java"],
+      "months": {
+        "2026-04": 8,
+        "2025-10": 4
+      },
+      "last": "2026-04-28T09:03:47Z",
+      "first": "2025-10-16T19:51:35Z"
+    },
+    "nomad": {
+      "stamp": "2026-10-01T01:20:36Z",
+      "commits": 10,
+      "langs": [
+        "Java",
+        "Kotlin"
+      ],
+      "months": {
+        "2026-10": 6,
+        "2026-09": 4
+      },
+      "last": "2026-10-01T01:20:23Z",
+      "first": "2026-09-30T12:06:45Z"
+    },
+    "web-wiremock": {
+      "stamp": "2026-10-26T10:57:30Z",
+      "commits": 29,
+      "langs": [
+        "JavaScript",
+        "Java",
+        "HTML"
+      ],
+      "months": {
+        "2026-10": 1,
+        "2026-03": 27,
+        "2026-07": 1
+      },
+      "last": "2026-10-26T10:57:21Z",
+      "first": "2026-03-12T20:42:04Z"
+    },
+    "moon": {
+      "stamp": "2026-09-13T19:19:14Z",
+      "commits": 2,
+      "langs": ["Python"],
+      "months": {"2026-09": 2},
+      "last": "2026-09-13T19:15:57Z",
+      "first": "2026-09-13T19:15:57Z"
+    },
+    "text-to-speach-simple": {
+      "stamp": "2023-11-02T19:17:32Z",
+      "commits": 4,
+      "langs": ["Java"],
+      "months": {"2023-11": 4},
+      "last": "2023-11-02T19:17:23Z",
+      "first": "2023-11-02T19:03:14Z"
+    },
+    "udk-book-scanner": {
+      "stamp": "2025-04-01T01:51:07Z",
+      "commits": 4,
+      "langs": [
+        "Java",
+        "Batchfile"
+      ],
+      "months": {
+        "2025-04": 1,
+        "2025-03": 3
+      },
+      "last": "2025-03-31T20:13:17Z",
+      "first": "2025-04-01T01:39:37Z"
+    },
+    "docker-secret-launcher": {
+      "stamp": "2026-10-05T22:03:20Z",
+      "commits": 3,
+      "langs": ["Java"],
+      "months": {"2026-10": 3},
+      "last": "2026-10-05T22:03:11Z",
+      "first": "2026-10-05T21:33:31Z"
+    },
+    "vetrogenerator": {
+      "stamp": "2026-11-06T11:07:03Z",
+      "commits": 9,
+      "langs": [
+        "Python",
+        "Shell"
+      ],
+      "months": {"2026-11": 9},
+      "last": "2026-11-06T11:06:40Z",
+      "first": "2026-11-02T00:14:05Z"
+    },
+    "fondoscan": {
+      "stamp": "2026-09-02T09:46:39Z",
+      "commits": 5,
+      "langs": [
+        "Java",
+        "Dockerfile"
+      ],
+      "months": {"2026-09": 5},
+      "last": "2026-09-02T09:46:31Z",
+      "first": "2026-09-01T21:13:44Z"
     },
     "typora-portable": {
       "stamp": "2024-07-17T08:41:15Z",
@@ -255,31 +459,15 @@
       "last": "2026-11-03T12:16:16Z",
       "first": "2026-06-27T15:52:02Z"
     },
-    "dragon": {
-      "stamp": "2026-11-11T02:05:43Z",
-      "commits": 5,
-      "langs": ["Python"],
-      "months": {"2026-11": 5},
-      "last": "2026-11-07T14:17:32Z",
-      "first": "2026-11-06T17:25:25Z"
-    },
-    "stegobox": {
-      "stamp": "2026-10-16T08:43:14Z",
-      "commits": 5,
-      "langs": ["Java"],
-      "months": {"2026-10": 5},
-      "last": "2026-10-16T08:41:37Z",
-      "first": "2026-10-15T08:45:12Z"
-    },
     "manuscriptium": {
-      "stamp": "2026-11-14T18:52:47Z",
-      "commits": 35,
+      "stamp": "2026-11-14T21:36:27Z",
+      "commits": 36,
       "langs": [
         "Java",
         "CSS"
       ],
-      "months": {"2026-11": 35},
-      "last": "2026-11-14T18:52:35Z",
+      "months": {"2026-11": 36},
+      "last": "2026-11-14T21:36:16Z",
       "first": "2026-11-09T16:36:59Z"
     },
     "kafka-example": {
@@ -289,22 +477,6 @@
       "months": {"2024-02": 1},
       "last": "2024-02-20T13:35:25Z",
       "first": "2024-02-20T13:35:25Z"
-    },
-    "scan-ocr": {
-      "stamp": "2026-10-15T08:29:03Z",
-      "commits": 1,
-      "langs": ["Java"],
-      "months": {"2026-10": 1},
-      "last": "2026-10-15T08:28:51Z",
-      "first": "2026-10-15T08:28:51Z"
-    },
-    "udk-site-parser": {
-      "stamp": "2025-03-11T23:08:47Z",
-      "commits": 7,
-      "langs": ["Java"],
-      "months": {"2025-03": 7},
-      "last": "2025-03-11T18:36:54Z",
-      "first": "2025-03-06T19:22:30Z"
     },
     "dex-linux": {
       "stamp": "2026-03-30T00:08:06Z",
@@ -343,17 +515,6 @@
       "last": "2026-11-13T15:16:33Z",
       "first": "2026-11-13T14:56:40Z"
     },
-    "postgresql-portable": {
-      "stamp": "2023-10-15T18:35:20Z",
-      "commits": 6,
-      "langs": ["Batchfile"],
-      "months": {
-        "2023-10": 1,
-        "2022-06": 5
-      },
-      "last": "2023-10-15T18:34:29Z",
-      "first": "2022-06-20T13:18:21Z"
-    },
     "object-entity-service": {
       "stamp": "2024-05-03T20:28:09Z",
       "commits": 11,
@@ -367,18 +528,6 @@
       },
       "last": "2024-05-03T20:27:57Z",
       "first": "2023-12-27T22:02:51Z"
-    },
-    "openapi-designer": {
-      "stamp": "2026-01-13T15:36:17Z",
-      "commits": 16,
-      "langs": [
-        "HTML",
-        "Java",
-        "Dockerfile"
-      ],
-      "months": {"2026-01": 16},
-      "last": "2026-01-13T15:35:50Z",
-      "first": "2026-01-13T09:00:26Z"
     },
     "malexple-blog": {
       "stamp": "2026-10-30T13:33:53Z",
@@ -407,26 +556,6 @@
       "last": "2026-10-30T13:33:41Z",
       "first": "2024-08-06T11:25:54Z"
     },
-    "keepasshttp2": {
-      "stamp": "2026-09-24T01:01:50Z",
-      "commits": 22,
-      "langs": [
-        "C#",
-        "Python",
-        "PowerShell"
-      ],
-      "months": {"2026-09": 22},
-      "last": "2026-09-24T01:01:42Z",
-      "first": "2026-09-18T14:13:40Z"
-    },
-    "spring-boot-market": {
-      "stamp": "2023-11-25T19:24:52Z",
-      "commits": 7,
-      "langs": ["Java"],
-      "months": {"2023-11": 7},
-      "last": "2023-11-25T19:24:44Z",
-      "first": "2023-11-09T18:42:32Z"
-    },
     "neuro-worm": {
       "stamp": "2026-10-21T02:16:20Z",
       "commits": 28,
@@ -434,37 +563,6 @@
       "months": {"2026-10": 28},
       "last": "2026-10-21T02:15:40Z",
       "first": "2026-10-16T18:57:26Z"
-    },
-    "book-metadata-service": {
-      "stamp": "2026-10-26T11:45:38Z",
-      "commits": 27,
-      "langs": [
-        "Java",
-        "HTML",
-        "Python"
-      ],
-      "months": {
-        "2026-10": 1,
-        "2026-08": 21,
-        "2026-09": 5
-      },
-      "last": "2026-10-26T10:51:44Z",
-      "first": "2026-08-17T18:01:42Z"
-    },
-    "rust-portable": {
-      "stamp": "2025-01-03T10:07:48Z",
-      "commits": 4,
-      "langs": [
-        "Perl",
-        "C",
-        "C++"
-      ],
-      "months": {
-        "2025-01": 2,
-        "2024-09": 2
-      },
-      "last": "2025-01-03T10:07:39Z",
-      "first": "2024-09-02T09:13:23Z"
     },
     "ai-proxy": {
       "stamp": "2026-07-11T22:49:27Z",
@@ -496,47 +594,6 @@
       "last": "2026-09-24T14:29:06Z",
       "first": "2026-09-24T00:15:43Z"
     },
-    "sopds": {
-      "stamp": "2026-06-12T13:08:22Z",
-      "commits": 41,
-      "langs": [
-        "HTML",
-        "Java",
-        "CSS"
-      ],
-      "months": {
-        "2025-12": 15,
-        "2025-11": 8,
-        "2026-06": 18
-      },
-      "last": "2026-06-12T13:08:12Z",
-      "first": "2025-11-09T21:27:46Z"
-    },
-    "quant": {
-      "stamp": "2026-04-28T09:04:03Z",
-      "commits": 12,
-      "langs": ["Java"],
-      "months": {
-        "2026-04": 8,
-        "2025-10": 4
-      },
-      "last": "2026-04-28T09:03:47Z",
-      "first": "2025-10-16T19:51:35Z"
-    },
-    "nomad": {
-      "stamp": "2026-10-01T01:20:36Z",
-      "commits": 10,
-      "langs": [
-        "Java",
-        "Kotlin"
-      ],
-      "months": {
-        "2026-10": 6,
-        "2026-09": 4
-      },
-      "last": "2026-10-01T01:20:23Z",
-      "first": "2026-09-30T12:06:45Z"
-    },
     "alifba": {
       "stamp": "2026-08-12T08:38:44Z",
       "commits": 13,
@@ -565,22 +622,6 @@
       "last": "2025-06-18T21:53:59Z",
       "first": "2025-06-18T21:52:54Z"
     },
-    "web-wiremock": {
-      "stamp": "2026-10-26T10:57:30Z",
-      "commits": 29,
-      "langs": [
-        "JavaScript",
-        "Java",
-        "HTML"
-      ],
-      "months": {
-        "2026-10": 1,
-        "2026-03": 27,
-        "2026-07": 1
-      },
-      "last": "2026-10-26T10:57:21Z",
-      "first": "2026-03-12T20:42:04Z"
-    },
     "scanner-profile": {
       "stamp": "2026-04-14T06:51:02Z",
       "commits": 8,
@@ -592,14 +633,6 @@
       "months": {"2026-04": 8},
       "last": "2026-04-13T13:34:42Z",
       "first": "2026-04-13T11:12:44Z"
-    },
-    "moon": {
-      "stamp": "2026-09-13T19:19:14Z",
-      "commits": 2,
-      "langs": ["Python"],
-      "months": {"2026-09": 2},
-      "last": "2026-09-13T19:15:57Z",
-      "first": "2026-09-13T19:15:57Z"
     },
     "gitbucket-docker-postgres": {
       "stamp": "2025-02-28T15:10:57Z",
@@ -619,14 +652,6 @@
       "months": {"2026-10": 6},
       "last": "2026-10-26T10:51:06Z",
       "first": "2026-10-21T22:17:44Z"
-    },
-    "text-to-speach-simple": {
-      "stamp": "2023-11-02T19:17:32Z",
-      "commits": 4,
-      "langs": ["Java"],
-      "months": {"2023-11": 4},
-      "last": "2023-11-02T19:17:23Z",
-      "first": "2023-11-02T19:03:14Z"
     },
     "wiremock-js-extension": {
       "stamp": "2026-08-02T15:04:00Z",
@@ -672,20 +697,6 @@
       "months": {"2024-02": 2},
       "last": "2024-02-20T10:35:16Z",
       "first": "2024-02-20T10:12:43Z"
-    },
-    "udk-book-scanner": {
-      "stamp": "2025-04-01T01:51:07Z",
-      "commits": 4,
-      "langs": [
-        "Java",
-        "Batchfile"
-      ],
-      "months": {
-        "2025-04": 1,
-        "2025-03": 3
-      },
-      "last": "2025-03-31T20:13:17Z",
-      "first": "2025-04-01T01:39:37Z"
     }
   }
 }
