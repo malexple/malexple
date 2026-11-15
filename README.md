@@ -341,7 +341,7 @@
 
 <!-- STATS_START -->
 
-**Проектов:** 49 · **Коммитов всего:** 870 · **Активных за 30 дн.:** 13 · **В среднем:** 46 коммитов в месяц
+**Проектов:** 49 · **Коммитов всего:** 870 · **Активных за 30 дн.:** 12 · **В среднем:** 46 коммитов в месяц
 
 #### 📅 По месяцам
 
@@ -384,7 +384,7 @@ xychart-beta
 | [**neuro-larynx**](https://github.com/malexple/neuro-larynx) | Нейронаука и биомеханика | Java, Python | 22.10.2026 | 26.10.2026 | 6 | 🟢 активен | 2.36x 🟢 |
 | [**neuro-worm**](https://github.com/malexple/neuro-worm) | — | Java | 17.10.2026 | 21.10.2026 | 28 | 🟢 активен | — |
 | [**soundbox**](https://github.com/malexple/soundbox) | — | Java | 18.10.2026 | 19.10.2026 | 7 | 🟢 активен | — |
-| [**stegobox**](https://github.com/malexple/stegobox) | — | Java | 15.10.2026 | 16.10.2026 | 5 | 🟢 активен | — |
+| [**stegobox**](https://github.com/malexple/stegobox) | — | Java | 15.10.2026 | 16.10.2026 | 5 | 🟡 затишье | — |
 | [**sysmon**](https://github.com/malexple/sysmon) | — | Java | 19.09.2026 | 15.10.2026 | 15 | 🟡 затишье | — |
 | [**scan-ocr**](https://github.com/malexple/scan-ocr) | — | Java | 15.10.2026 | 15.10.2026 | 1 | 🟡 затишье | — |
 | [**docker-secret-launcher**](https://github.com/malexple/docker-secret-launcher) | — | Java | 06.10.2026 | 06.10.2026 | 3 | 🟡 затишье | — |
