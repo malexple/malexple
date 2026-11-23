@@ -341,13 +341,13 @@
 
 <!-- STATS_START -->
 
-**Проектов:** 49 · **Коммитов всего:** 886 · **Активных за 30 дн.:** 10 · **В среднем:** 47 коммитов в месяц
+**Проектов:** 49 · **Коммитов всего:** 891 · **Активных за 30 дн.:** 10 · **В среднем:** 48 коммитов в месяц
 
 #### 📅 По месяцам
 
 | Месяц | Новых проектов | Коммитов | Активных проектов |
 |-------|----------------|----------|-------------------|
-| 2026-11 | 5 | 86 | 6 |
+| 2026-11 | 5 | 91 | 7 |
 | 2026-10 | 6 | 75 | 11 |
 | 2026-09 | 7 | 63 | 9 |
 | 2026-08 | 3 | 107 | 6 |
@@ -365,20 +365,20 @@ xychart-beta
     title "Коммиты по месяцам"
     x-axis ["2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09", "2026-10", "2026-11"]
     y-axis "Коммитов" 0 --> 118
-    bar [21, 33, 5, 45, 21, 0, 33, 78, 107, 63, 75, 86]
+    bar [21, 33, 5, 45, 21, 0, 33, 78, 107, 63, 75, 91]
 ```
 
 #### 🗂 Все проекты
 
 | Проект | Тема | Стек | Создан | Изменён | Коммитов | Статус | ⚡ |
 |--------|------|------|--------|---------|----------|--------|----|
-| [**indexer**](https://github.com/malexple/indexer) | — | Java, Python, Dockerfile | 15.11.2026 | 21.11.2026 | 11 | 🟢 активен | — |
+| [**malexple-blog**](https://github.com/malexple/malexple-blog) | — | HTML, CSS, JavaScript | 06.08.2024 | 23.11.2026 | 153 | 🟢 активен | — |
+| [**indexer**](https://github.com/malexple/indexer) | — | Java, Python, Dockerfile | 15.11.2026 | 23.11.2026 | 13 | 🟢 активен | — |
 | [**manuscriptium**](https://github.com/malexple/manuscriptium) | — | Java, CSS | 09.11.2026 | 19.11.2026 | 51 | 🟢 активен | — |
 | [**scan-project**](https://github.com/malexple/scan-project) | — | Java | 13.11.2026 | 13.11.2026 | 5 | 🟢 активен | — |
 | [**dragon**](https://github.com/malexple/dragon) | — | Python | 07.11.2026 | 11.11.2026 | 5 | 🟢 активен | — |
 | [**vetrogenerator**](https://github.com/malexple/vetrogenerator) | Эксперименты | Python, Shell | 02.11.2026 | 06.11.2026 | 9 | 🟢 активен | 3636.45x 🟢🟢🟢 |
 | [**solomon-seal**](https://github.com/malexple/solomon-seal) | — | Java | 01.07.2026 | 03.11.2026 | 17 | 🟢 активен | — |
-| [**malexple-blog**](https://github.com/malexple/malexple-blog) | — | HTML, CSS, JavaScript | 06.08.2024 | 30.10.2026 | 150 | 🟢 активен | — |
 | [**book-metadata-service**](https://github.com/malexple/book-metadata-service) | Метаданные книг | Java, HTML, Python | 31.08.2026 | 26.10.2026 | 27 | 🟢 активен | 0.80x 🟡 |
 | [**web-wiremock**](https://github.com/malexple/web-wiremock) | Инструменты тестирования | JavaScript, Java, HTML | 13.03.2026 | 26.10.2026 | 29 | 🟢 активен | 1.19x 🟢 |
 | [**neuro-larynx**](https://github.com/malexple/neuro-larynx) | Нейронаука и биомеханика | Java, Python | 22.10.2026 | 26.10.2026 | 6 | 🟢 активен | 2.36x 🟢 |
