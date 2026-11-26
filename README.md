@@ -372,9 +372,9 @@ xychart-beta
 
 | Проект | Тема | Стек | Создан | Изменён | Коммитов | Статус | ⚡ |
 |--------|------|------|--------|---------|----------|--------|----|
+| [**indexer**](https://github.com/malexple/indexer) | — | Java, Python, Dockerfile | 15.11.2026 | 26.11.2026 | 13 | 🟢 активен | — |
 | [**manuscriptium**](https://github.com/malexple/manuscriptium) | — | Java, CSS | 09.11.2026 | 26.11.2026 | 78 | 🟢 активен | — |
 | [**malexple-blog**](https://github.com/malexple/malexple-blog) | — | HTML, CSS, JavaScript | 06.08.2024 | 23.11.2026 | 153 | 🟢 активен | — |
-| [**indexer**](https://github.com/malexple/indexer) | — | Java, Python, Dockerfile | 15.11.2026 | 23.11.2026 | 13 | 🟢 активен | — |
 | [**scan-project**](https://github.com/malexple/scan-project) | — | Java | 13.11.2026 | 13.11.2026 | 5 | 🟢 активен | — |
 | [**dragon**](https://github.com/malexple/dragon) | — | Python | 07.11.2026 | 11.11.2026 | 5 | 🟢 активен | — |
 | [**vetrogenerator**](https://github.com/malexple/vetrogenerator) | Эксперименты | Python, Shell | 02.11.2026 | 06.11.2026 | 9 | 🟢 активен | 3636.45x 🟢🟢🟢 |
